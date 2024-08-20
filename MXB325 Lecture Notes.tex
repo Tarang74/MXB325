@@ -250,13 +250,13 @@ variables \(a\), \(b\), and \(f\):
               a\left( x,\: y \right) \pdv{u}{x} + b\left( x,\: y \right) \pdv{u}{y} = f\left( x,\: y \right).
           \end{equation*}
     \item \textbf{Semi-Linear}:
-    \begin{equation*}
-        a\left( x,\: y \right) \pdv{u}{x} + b\left( x,\: y \right) \pdv{u}{y} = f\left( x,\: y,\: u \right).
-    \end{equation*}
+          \begin{equation*}
+              a\left( x,\: y \right) \pdv{u}{x} + b\left( x,\: y \right) \pdv{u}{y} = f\left( x,\: y,\: u \right).
+          \end{equation*}
     \item \textbf{Quasi-Linear}:
-    \begin{equation*}
-        a\left( x,\: y,\: u \right) \pdv{u}{x} + b\left( x,\: y,\: u \right) \pdv{u}{y} = f\left( x,\: y,\: u \right).
-    \end{equation*}
+          \begin{equation*}
+              a\left( x,\: y,\: u \right) \pdv{u}{x} + b\left( x,\: y,\: u \right) \pdv{u}{y} = f\left( x,\: y,\: u \right).
+          \end{equation*}
     \item \textbf{Nonlinear}: Otherwise.
 \end{itemize}
 \subsection{Characteristics}
@@ -273,7 +273,8 @@ the normal vector:
         \pdv{u}{x} \\
         \pdv{u}{y} \\
         -1
-    \end{bmatrix}.
+    \end{bmatrix}
+    .
 \end{equation*}
 We can find a tangent vector to \(\symbf{n}\) by using the orthogonality
 property of the dot product of the normal vector:
@@ -294,11 +295,13 @@ Let us call this vector \(\symbf{v}\):
         a\left( x,\: y,\: u \right) \\
         b\left( x,\: y,\: u \right) \\
         f\left( x,\: y,\: u \right)
-    \end{bmatrix}.
+    \end{bmatrix}
+    .
 \end{equation*}
 Let us now consider a parametric curve defined:
 \begin{equation*}
-    \symbf{r}\left( s \right) = \begin{bmatrix}
+    \symbf{r}\left( s \right) =
+    \begin{bmatrix}
         x\left( s \right) \\
         y\left( s \right) \\
         u\left( s \right)
@@ -308,16 +311,12 @@ and let us impose that \(\symbf{r}'\left( s \right) = \symbf{v}\), so
 that the curve lies on the solution surface. This gives us the following
 system of equations:
 \begin{equation*}
-\symbf{r}'\left( s \right) = \symbf{v} \iff \begin{bmatrix}
-        x'\left( s \right) \\
-        y'\left( s \right) \\
-        u'\left( s \right)
-    \end{bmatrix}
-    = \begin{bmatrix}
-        a\left( x,\: y,\: u \right) \\
-        b\left( x,\: y,\: u \right) \\
-        f\left( x,\: y,\: u \right)
-    \end{bmatrix}.
+    \symbf{r}'\left( s \right) = \symbf{v} \iff
+    \begin{cases}
+        \displaystyle\pdv{x}{s} = a\left( x,\: y,\: u \right), \\
+        \displaystyle\pdv{y}{s} = b\left( x,\: y,\: u \right), \\
+        \displaystyle\pdv{u}{s} = f\left( x,\: y,\: u \right).
+    \end{cases}
 \end{equation*}
 These equations are called \textit{characteristic curves} of the PDE.
 We can integrate each of these equations to find parametric curves in
@@ -326,8 +325,9 @@ condition:
 \begin{equation*}
     u\left( 0 \right) = u_0\left( \xi \right).
 \end{equation*}
-where \(x = \xi\) and \(y = 0\)\footnote{\(\xi\) is introduced to avoid
-confusion with the variable \(x\) in the initial condition.}. We can
+where \(x = \xi\)\footnote{\(\xi\) is introduced to avoid
+    confusion with the variable \(x\) in the initial condition.}
+and \(y = 0\). We can
 then solve for \(u\left( x,\: y \right)\) by eliminating \(s\) and
 \(\xi\) from the parametric equations.
 \end{document}
