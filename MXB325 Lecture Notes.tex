@@ -4,6 +4,8 @@
 \input{LaTeX-Submodule/template.tex}
 
 % Additional packages & macros
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
 
 % Header and footer
 \newcommand{\unitName}{Differential Equations and Modelling 2}
@@ -45,5 +47,287 @@
 \tableofcontents
 \newpage
 %
+\part{Symmetry Methods}
+\section{Symmetry Transformations}
+Consider a partial differential equation for \(u\left( x,\: t \right)\)
+whose domain lies in \(\R^2\). Such a problem typically does not have
+any natural length or time scales associated with it's fundamental
+solution. Thus, let us transform the independent and dependent
+variables through the mapping \(\left( x,\: t,\: u \right) \mapsto
+\left( X,\: T,\: U \right)\) where \(X = X\left( x,\: t,\: u \right)\),
+\(T = T\left( x,\: t,\: u \right)\), and \(U = U\left( x,\: t,\: u
+\right)\), such that the PDE is invariant under this transformation,
+that is, the transformed PDE in \(U\) has the same form as the original
+PDE in \(u\).
 
+The choice of mapping may consist of dilations and translations of the
+independent and dependent variables by some constant factors, where
+each constant is enforced by the invariance condition. To do this, we
+must ensure that the function \(U\left( x,\: t,\: u\left( X,\: T
+\right) \right)\) satisfies the transformed PDE. When this is the case,
+the PDE is said to have a \textit{symmetry transformation}.
+
+The goal of these symmetry methods is to find an appropriate
+transformation that simplies the PDE, often reducing it to an ODE.
+\subsection{Dilation Symmetry}
+A dilation symmetry is a transformation of the form
+\begin{equation*}
+    X = a x, \quad T = a^\beta t, \quad U = a^\gamma u,
+\end{equation*}
+where \(a\), \(\beta\), and \(\gamma\) are constants. Note that we do
+not express the transformation for \(x\) as \(X = a^\alpha x\) since it
+does not provide any additional information.
+\begin{example}
+    Consider the transport equation
+    \begin{equation*}
+        \pdv{u\left( x,\: t \right)}{t} + c \pdv{u\left( x,\: t \right)}{x} = 0
+    \end{equation*}
+    and the mapping
+    \begin{equation*}
+        X = a x, \quad T = a^\beta t, \quad U = u.
+    \end{equation*}
+    After substituting the transformed solution into the PDE, we find
+    \begin{align*}
+        \pdv{u\left( X,\: T \right)}{t} + c \pdv{u\left( X,\: T \right)}{x}                       & = 0  \\
+        \pdv{u\left( X,\: T \right)}{T} \odv{T}{t} + c \pdv{u\left( X,\: T \right)}{X} \odv{X}{x} & = 0  \\
+        a^\beta \pdv{u\left( X,\: T \right)}{T} + a c \pdv{u\left( X,\: T \right)}{X}             & = 0.
+    \end{align*}
+    For this PDE to be invariant under a dilation transformation, we
+    must factor out the constant \(a\) from the equation. This implies
+    that:
+    \begin{equation*}
+        a^\beta = a \implies \beta = 1,
+    \end{equation*}
+    so that
+    \begin{equation*}
+        \pdv{u\left( X,\: T \right)}{T} + c \pdv{u\left( X,\: T \right)}{X} = 0.
+    \end{equation*}
+    Here we have shown that the transport equation is invariant under
+    the above dilation transformation when \(\beta = 1\).
+\end{example}
+\begin{example}
+    Consider the nonlinear PDE
+    \begin{equation*}
+        \pdv{u\left( x,\: y \right)}{x} + y^2 \pdv{u\left( x,\: y \right)}{y} = 0
+    \end{equation*}
+    and the mapping
+    \begin{equation*}
+        X = a x, \quad Y = a^\beta y, \quad U = u.
+    \end{equation*}
+    By substituting the transformed solution into the PDE, we find
+    \begin{align*}
+        \pdv{u\left( X,\: Y \right)}{x} + y^2 \pdv{u\left( X,\: Y \right)}{y}                                    & = 0  \\
+        \pdv{u\left( X,\: Y \right)}{X} \odv{X}{x} + y^2 \pdv{u\left( X,\: Y \right)}{Y} \odv{Y}{y}              & = 0  \\
+        a \pdv{u\left( X,\: Y \right)}{X} + a^\beta y^2 \pdv{u\left( X,\: Y \right)}{Y}                          & = 0  \\
+        a \pdv{u\left( X,\: Y \right)}{X} + a^\beta \left( Y / a^\beta \right)^2 \pdv{u\left( X,\: Y \right)}{Y} & = 0  \\
+        a \pdv{u\left( X,\: Y \right)}{X} + a^{-\beta} Y^2 \pdv{u\left( X,\: Y \right)}{Y}                       & = 0.
+    \end{align*}
+    For this PDE to be invariant under a dilation transformation, we
+    must again factor out \(a\) from the equation so that:
+    \begin{equation*}
+        a = a^{-\beta} \implies 1 = -\beta \implies \beta = -1,
+    \end{equation*}
+    and
+    \begin{equation*}
+        \pdv{u\left( X,\: Y \right)}{X} + Y^2 \pdv{u\left( X,\: Y \right)}{Y} = 0.
+    \end{equation*}
+    Here we have shown that this nonlinear PDE is invariant under the
+    above dilation transformation when \(\beta = -1\).
+\end{example}
+\begin{example}
+    Consider the nonlinear convection diffusion equation
+    \begin{equation*}
+        \pdv{u\left( x,\: t \right)}{t} = u\left( x,\: t \right) \pdv[order=2]{u\left( x,\: t \right)}{x} - \pdv{u\left( x,\: t \right)}{x}
+    \end{equation*}
+    and the mapping
+    \begin{equation*}
+        X = a x, \quad T = a^\beta t, \quad U = a^\gamma u.
+    \end{equation*}
+    We will once again substitute the transformed solution into the PDE
+    to find
+    \begin{align*}
+        a^\gamma \pdv{u\left( X,\: T \right)}{t}            & = a^{2\gamma} u\left( X,\: T \right) \pdv[order=2]{u\left( X,\: T \right)}{x} - a^\gamma \pdv{u\left( X,\: T \right)}{x}                                       \\
+        a^\gamma \pdv{u\left( X,\: T \right)}{T} \odv{T}{t} & = a^{2\gamma} u\left( X,\: T \right) \pdv*{\left[ \pdv{u\left( X,\: T \right)}{X} \odv{X}{x} \right]}{x} - a^\gamma \pdv{u\left( X,\: T \right)}{X} \odv{X}{x} \\
+        a^{\beta + \gamma} \pdv{u\left( X,\: T \right)}{T}  & = a^{1 + 2\gamma} u\left( X,\: T \right) \pdv*{\left[ \odv{X}{x} \pdv{u\left( X,\: T \right)}{X} \right]}{X} - a^{1 + \gamma} \pdv{u\left( X,\: T \right)}{X}  \\
+        a^{\beta + \gamma} \pdv{u\left( X,\: T \right)}{T}  & = a^{2 + 2\gamma} u\left( X,\: T \right) \pdv[order=2]{u\left( X,\: T \right)}{X} - a^{1 + \gamma} \pdv{u\left( X,\: T \right)}{X}.
+    \end{align*}
+    For this PDE to be invariant under a dilation transformation, we
+    must factor out \(a\) from the equation so that:
+    \begin{equation*}
+        a^{\beta + \gamma} = a^{2 + 2\gamma} = a^{1 + \gamma} \implies \beta + \gamma = 2 + 2\gamma = 1 + \gamma \implies \beta = 1, \gamma = -1,
+    \end{equation*}
+    and
+    \begin{equation*}
+        \pdv{u\left( X,\: T \right)}{T} = u\left( X,\: T \right) \pdv[order=2]{u\left( X,\: T \right)}{X} - \pdv{u\left( X,\: T \right)}{X}.
+    \end{equation*}
+    Here we have shown that this nonlinear PDE is invariant under the
+    above dilation transformation when \(\beta = 1\) and \(\gamma = -1\).
+\end{example}
+\subsection{Translation Symmetry}
+A translation symmetry is a transformation of the form
+\begin{equation*}
+    X = x - x_0, \quad T = t - t_0, \quad U = u - u_0,
+\end{equation*}
+where \(x_0\), \(t_0\), and \(u_0\) are constants.
+\begin{example}
+    Consider the heat equation
+    \begin{equation*}
+        \pdv{u\left( x,\: t \right)}{t} = D \pdv[order=2]{u\left( x,\: t \right)}{x}
+    \end{equation*}
+    and the mapping
+    \begin{equation*}
+        X = x - x_0, \quad T = t - t_0, \quad U = u - u_0.
+    \end{equation*}
+    By substituting the transformed solution into the PDE, we find
+    \begin{align*}
+        \pdv*{\left( u\left( X,\: T \right) - u_0 \right)}{t} & = D \pdv*[order=2]{\left( u\left( X,\: T \right) - u_0 \right)}{x}      \\
+        \pdv{u\left( X,\: T \right)}{T} \odv{T}{t}            & = D \pdv*{\left( \pdv{u\left( X,\: T \right)}{X} \odv{X}{x} \right)}{x} \\
+        \pdv{u\left( X,\: T \right)}{T}                       & = D \pdv{}{X} \odv{X}{x} \left( \pdv{u\left( X,\: T \right)}{X} \right) \\
+        \pdv{u\left( X,\: T \right)}{T}                       & = D \pdv[order=2]{u\left( X,\: T \right)}{X}.
+    \end{align*}
+    Here we have shown that the heat equation is invariant under the
+    above translation transformation.
+\end{example}
+\section{Similarity Solutions}
+In the previous section, we considered dilation transformations where
+both independent variables were scaled by some power of \(a\). Notice
+that the product \(\eta = x t^{-1/\beta}\) is invariant under the same
+dilation transformation:
+\begin{align*}
+    \eta = x t^{-1/\beta} \implies H = \left( \frac{x}{a} \right) \left( \frac{T}{a^\beta} \right)^{-1/\beta} = X T^{-1/\beta}.
+\end{align*}
+Let us therefore consider transformations of the form
+\begin{equation*}
+    X = a x, \quad T = a^\beta t, \quad U = t^{-\alpha} f\left( \eta \right),
+\end{equation*}
+where \(a\), \(\alpha\), and \(\beta\) are constant and \(f\) is an arbitrary
+function to be determined. \(f\) is called a \textit{similarity solution}
+(with \textit{similarity variable} \(\eta\)) and our goal is to
+transform the PDE into an ODE with a single independent variable \(\eta\).
+To do this:
+\begin{enumerate}
+    \item Substitute \(u\left( X,\: T \right)\) into the PDE to solve
+          for \(\alpha\) and \(\beta\) while maintaining invariance.
+    \item Obtain an ODE in terms of \(f\left( \eta \right)\) by
+          substituting the similarity solution into the PDE.
+    \item Obtain boundary conditions in terms of \(\eta\) using the
+          same transformation.
+    \item Solve the ODE to find \(f\left( \eta \right)\).
+    \item Transform back to the original variables to find a solution
+          to the PDE.
+\end{enumerate}
+\section{Travelling Wave Solutions}
+Another type of solution is the \textit{travelling wave solution},
+where the solution to a PDE appears to move at a constant velocity when
+after a long period of time. This is similar to a steady state solution
+where the solution does not change after a long period of time. In this
+problem, we assume solutions of the form
+\begin{equation*}
+    u\left( x,\: t \right) = f\left( z \right), \quad z = x - c t,
+\end{equation*}
+where \(c\) is the speed at which the solution travels. The travelling
+wave speed is often determined using analysis, boundary conditions,
+numerical methods, or physical constraints. This method is only
+applicable to PDEs that are invariant under translations to both
+independent variables. As such, the PDE must not contain any explicit
+dependence on \(x\) or \(t\).
+\part{Method of Characteristics}
+The method of characteristics is a technique used to solve nonlinear
+PDEs by reducing them to a system of ODEs. It considers
+parametrisations of the solution through a set of curves in the
+solution space.
+\section{First Order PDEs}
+\subsection{Classification}
+Consider the general first order PDE in two variables:
+\begin{equation*}
+    a \pdv{u}{x} + b \pdv{u}{y} = f.
+\end{equation*}
+We can classify this PDE into 3 types based on the value of the
+variables \(a\), \(b\), and \(f\):
+\begin{itemize}
+    \item \textbf{Linear}:
+          \begin{equation*}
+              a\left( x,\: y \right) \pdv{u}{x} + b\left( x,\: y \right) \pdv{u}{y} = f\left( x,\: y \right).
+          \end{equation*}
+    \item \textbf{Semi-Linear}:
+    \begin{equation*}
+        a\left( x,\: y \right) \pdv{u}{x} + b\left( x,\: y \right) \pdv{u}{y} = f\left( x,\: y,\: u \right).
+    \end{equation*}
+    \item \textbf{Quasi-Linear}:
+    \begin{equation*}
+        a\left( x,\: y,\: u \right) \pdv{u}{x} + b\left( x,\: y,\: u \right) \pdv{u}{y} = f\left( x,\: y,\: u \right).
+    \end{equation*}
+    \item \textbf{Nonlinear}: Otherwise.
+\end{itemize}
+\subsection{Characteristics}
+Given a quasi-linear PDE of the form:
+\begin{equation*}
+    a\left( x,\: y,\: u \right) \pdv{u}{x} + b\left( x,\: y,\: u \right) \pdv{u}{y} = f\left( x,\: y,\: u \right)
+\end{equation*}
+with the initial condition \(u\left( x,\: 0 \right) = u_0\left( x \right)\),
+let us consider the surface \(u = u\left( x,\: y \right)\), which has
+the normal vector:
+\begin{equation*}
+    \symbf{n} =
+    \begin{bmatrix}
+        \pdv{u}{x} \\
+        \pdv{u}{y} \\
+        -1
+    \end{bmatrix}.
+\end{equation*}
+We can find a tangent vector to \(\symbf{n}\) by using the orthogonality
+property of the dot product of the normal vector:
+\begin{equation*}
+    \begin{bmatrix}
+        a\left( x,\: y,\: u \right) \\
+        b\left( x,\: y,\: u \right) \\
+        f\left( x,\: y,\: u \right)
+    \end{bmatrix}
+    \cdot
+    \symbf{n}
+    = 0,
+\end{equation*}
+Let us call this vector \(\symbf{v}\):
+\begin{equation*}
+    \symbf{v} =
+    \begin{bmatrix}
+        a\left( x,\: y,\: u \right) \\
+        b\left( x,\: y,\: u \right) \\
+        f\left( x,\: y,\: u \right)
+    \end{bmatrix}.
+\end{equation*}
+Let us now consider a parametric curve defined:
+\begin{equation*}
+    \symbf{r}\left( s \right) = \begin{bmatrix}
+        x\left( s \right) \\
+        y\left( s \right) \\
+        u\left( s \right)
+    \end{bmatrix}
+\end{equation*}
+and let us impose that \(\symbf{r}'\left( s \right) = \symbf{v}\), so
+that the curve lies on the solution surface. This gives us the following
+system of equations:
+\begin{equation*}
+\symbf{r}'\left( s \right) = \symbf{v} \iff \begin{bmatrix}
+        x'\left( s \right) \\
+        y'\left( s \right) \\
+        u'\left( s \right)
+    \end{bmatrix}
+    = \begin{bmatrix}
+        a\left( x,\: y,\: u \right) \\
+        b\left( x,\: y,\: u \right) \\
+        f\left( x,\: y,\: u \right)
+    \end{bmatrix}.
+\end{equation*}
+These equations are called \textit{characteristic curves} of the PDE.
+We can integrate each of these equations to find parametric curves in
+\(s\), and solve for all integration constants using the initial
+condition:
+\begin{equation*}
+    u\left( 0 \right) = u_0\left( \xi \right).
+\end{equation*}
+where \(x = \xi\) and \(y = 0\)\footnote{\(\xi\) is introduced to avoid
+confusion with the variable \(x\) in the initial condition.}. We can
+then solve for \(u\left( x,\: y \right)\) by eliminating \(s\) and
+\(\xi\) from the parametric equations.
 \end{document}
