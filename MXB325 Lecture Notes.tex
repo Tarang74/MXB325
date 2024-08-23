@@ -243,7 +243,7 @@ Consider the general first order PDE in two variables:
     a \pdv{u}{x} + b \pdv{u}{y} = c.
 \end{equation*}
 This PDE has four classifications based on the value of the
-variables \(a\), \(b\), and \(f\):
+variables \(a\), \(b\), and \(c\):
 \begin{itemize}
     \item \textbf{Linear}:
           \begin{equation*}
@@ -260,34 +260,28 @@ variables \(a\), \(b\), and \(f\):
     \item \textbf{Nonlinear}: Otherwise.
 \end{itemize}
 \subsection{Solution Method}
-Given a quasi-linear PDE of the form:
+Consider a quasi-linear PDE of the form:
 \begin{equation*}
     a\left( x,\: y,\: u \right) \pdv{u}{x} + b\left( x,\: y,\: u \right) \pdv{u}{y} = c\left( x,\: y,\: u \right)
 \end{equation*}
-with the initial condition \(u\left( x_0,\: y_0 \right) = u_0\left( x \right)\),
-let us consider the surface \(u = u\left( x,\: y \right)\), which has
-the normal vector:
+with initial data \(u_0\left( x \right)\) and initial condition
+\(u\left( x_0,\: y_0 \right) = u_0\left( x \right)\), where \(a\), \(b\),
+and \(c\) are continuous functions in \(x\), \(y\), and \(u\). To reduce
+this problem into a family of ODEs, we will consider the solution
+surface \(u = u\left( x,\: y \right)\) on which the PDE is satisfied.
+If we express is surface implicitly as \(f\left( x,\: y,\: u \right) = u\left( x,\: y \right) - u = 0\),
+we find the following normal vector:
 \begin{equation*}
-    \symbf{n} =
+    \symbf{n} = \symbf{\nabla} f =
     \begin{bmatrix}
-        \pdv{u}{x} \\
-        \pdv{u}{y} \\
+        u_x \\
+        u_y \\
         -1
     \end{bmatrix}
     .
 \end{equation*}
-We can find a tangent vector to \(\symbf{n}\) using the dot product:
-\begin{equation*}
-    \begin{bmatrix}
-        a\left( x,\: y,\: u \right) \\
-        b\left( x,\: y,\: u \right) \\
-        c\left( x,\: y,\: u \right)
-    \end{bmatrix}
-    \cdot
-    \symbf{n}
-    = 0.
-\end{equation*}
-We will call this vector \(\symbf{v}\):
+We will also define the vector field \(\symbf{v}\) consisting of the
+coefficients of this PDE:
 \begin{equation*}
     \symbf{v} =
     \begin{bmatrix}
@@ -295,9 +289,12 @@ We will call this vector \(\symbf{v}\):
         b\left( x,\: y,\: u \right) \\
         c\left( x,\: y,\: u \right)
     \end{bmatrix}
-    .
 \end{equation*}
-Let us now consider a parametric curve defined as:
+so that we express the PDE as \(\symbf{v} \cdot \symbf{n} = 0\). As
+\(\symbf{n}\) is normal to the solution surface \(u\left( x,\: y \right)\),
+\(\symbf{v}\) must lie on the tangent plane to the solution surface.
+This vector field is therefore known as the \textit{characteristic
+    direction} of the PDE. Let us now consider a parametric curve defined as:
 \begin{equation*}
     \symbf{r}\left( s \right) =
     \begin{bmatrix}
@@ -307,33 +304,42 @@ Let us now consider a parametric curve defined as:
     \end{bmatrix}
     ,
 \end{equation*}
-and let us impose that \(\symbf{r}'\left( s \right) = \symbf{v}\), so
-that the curve lies on the solution surface. This gives us the following
-system of equations:
+and let us impose that it's tangent vector is equal to \(\symbf{v}\)
+so that the curve also lies on the solution surface:
 \begin{equation*}
-    \symbf{r}'\left( s \right) = \symbf{v} \iff
-    \begin{cases}
-        \displaystyle\pdv{x}{s} = a\left( x,\: y,\: u \right), \\
-        \displaystyle\pdv{y}{s} = b\left( x,\: y,\: u \right), \\
-        \displaystyle\pdv{u}{s} = c\left( x,\: y,\: u \right).
-    \end{cases}
+    \symbf{r}'\left( s \right) = \symbf{v}.
 \end{equation*}
-These parametric curves are found through integration and we can solve
+Doing so yields the following system of ODEs:
+\begin{align*}
+    \displaystyle\pdv{x}{s} & = a\left( x,\: y,\: u \right), \\
+    \displaystyle\pdv{y}{s} & = b\left( x,\: y,\: u \right), \\
+    \displaystyle\pdv{u}{s} & = c\left( x,\: y,\: u \right).
+\end{align*}
+We can solve these parametric curves through integration and solve for
 all integration constants \(x_0\), \(y_0\), and \(u_0\) using the
 parametric initial condition:
 \begin{equation*}
-    u\left( 0 \right) = u_0\left( \xi \right) \quad \text{on} \quad x\left( 0 \right) = x_0\left( \xi \right), \quad y\left( 0 \right) = y_0\left(\xi \right).
+    u\left( 0 \right) = u_0\left( \xi \right) \quad \text{on} \quad x\left( 0 \right) = x_0\left( \xi \right) \quad \text{and} \quad y\left( 0 \right) = y_0\left(\xi \right).
 \end{equation*}
 with the parameter \(\xi\)\footnote{\(\xi\) is introduced to parametrise
-the variable \(x\) in the initial condition.}. The resulting parametric
+    the variable \(x\) in the initial condition.}. The resulting parametric
 equations \(x\left( s \right)\) and \(y\left( s \right)\) form
-\textit{characteristic curves} of the PDE, and we can find the solution
-\(u\left( x,\: y \right)\) by eliminating \(s\) and \(\xi\) from the
-three parametric equations.
+\textit{characteristics} for the PDE, which allows us to determine the
+value of \(u\left( x,\: y \right)\) along the curve for specific values
+of \(\xi\). The solution \(u\left( x,\: y \right)\) can then be found by
+eliminating \(s\) and \(\xi\) from the three parametric equations.
+\subsection{Characteristic Curves}
+After determining characteristics for a PDE, we can plot these
+parametric curves in the \(x\)-\(y\) plane to determine regions where
+the solution is constant. We do so by considering the \textit{domain of
+dependence} for points in each region to determine the value of the
+solution \(u\) by walking backward along these curves. Doing so allows
+us to understand how the solution behaves along different
+characteristics without needing to plot the entire solution surface.
 \section{System of First Order PDEs}
 Consider an \(n \times n\) coupled system of first order PDEs:
 \begin{equation*}
-    \symbf{A} \pdv{\symbf{u}}{x} + \symbf{B} \pdv{\symbf{u}}{y} = \symbf{c},
+    \symbf{A} \pdv{\symbf{u}}{x} + \symbf{B} \pdv{\symbf{u}}{y} = \symbf{c}, \quad \text{with} \quad \symbf{u}\left( x_0,\: y_0 \right) = \symbf{u}_0\left( x \right),
 \end{equation*}
 where \(\symbf{A} = \symbf{A}\left( x,\: y,\: \symbf{u} \right)\) and
 \(\symbf{B} = \symbf{B}\left( x,\: y,\: \symbf{u} \right)\) are
@@ -341,20 +347,20 @@ where \(\symbf{A} = \symbf{A}\left( x,\: y,\: \symbf{u} \right)\) and
 \(\symbf{c} = \symbf{c}\left( x,\: y,\: \symbf{u} \right)\) is an
 \(n \times 1\) vector function.
 In this case, we want to find characteristic directions \(\symbf{v}\)
-that will allow us to decouple the system. We will try to decompose
-\(\symbf{A}\) and \(\symbf{B}\) into a diagonal form by assuming the
-following relationship holds for some \(\symbf{m}\):
+that will allow us to decouple the system into first order ODEs. Let us
+try to decompose \(\symbf{A}\) and \(\symbf{B}\) into a diagonal form by
+assuming the following relationship holds for some \(\symbf{m}\):
 \begin{equation*}
     \symbf{v}^\top \left( \symbf{A} \pdv{\symbf{u}}{x} + \symbf{B} \pdv{\symbf{u}}{y} \right) = \symbf{m}^\top \left( \alpha \pdv{\symbf{u}}{x} + \beta \pdv{\symbf{u}}{y} \right),
 \end{equation*}
 where \(\symbf{v}\) and \(\symbf{m}\) are \(n \times 1\) vector
 functions, and \(\alpha = \odv{x}{s}\) and \(\beta = \odv{y}{s}\) are
-parametric functions. For this to hold, we must have:
+scalar parametric functions. For this to hold, we must have:
 \begin{equation*}
     \symbf{v}^\top \symbf{A} = \symbf{m}^\top \alpha \quad \text{and} \quad \symbf{v}^\top \symbf{B} = \symbf{m}^\top \beta.
 \end{equation*}
-By eliminating \(\symbf{m}^\top\), we can find a relationship between
-\(\symbf{A}\) and \(\symbf{B}\):
+By eliminating \(\symbf{m}^\top\), we find the following relationship
+between \(\symbf{A}\) and \(\symbf{B}\):
 \begin{align*}
     \frac{1}{\alpha} \symbf{v}^\top \symbf{A} & = \frac{1}{\beta} \symbf{v}^\top \symbf{B}      \\
     \symbf{v}^\top \symbf{A}                  & = \frac{\alpha}{\beta} \symbf{v}^\top \symbf{B} \\
@@ -372,18 +378,24 @@ decomposition:
     \symbf{A} = \symbf{B} \symbf{V} \symbf{\Lambda} \symbf{V}^{-1},
 \end{equation*}
 where \(\symbf{V}\) is the matrix of eigenvectors and \(\symbf{\Lambda}\)
-is the diagonal matrix of eigenvalues. Let us now define a new variable
-\(\symbf{w} = \symbf{V}^{-1} \symbf{u}\) to decouple the system:
+is the diagonal matrix of eigenvalues. If we assume a solution of the
+form \(\symbf{u} = \symbf{V} \symbf{w}\), we can transform the system
+of PDEs into a diagonal form:
 \begin{align*}
-    \symbf{A} \pdv{\symbf{u}}{x} + \symbf{B} \pdv{\symbf{u}}{y}                                    & = \symbf{c}                                \\
-    \symbf{V}^{-1} \symbf{B}^{-1} \symbf{A} \pdv{\symbf{u}}{x} + \symbf{V}^{-1} \pdv{\symbf{u}}{y} & = \symbf{V}^{-1} \symbf{B}^{-1} \symbf{c}  \\
-    \symbf{\Lambda} \pdv{\symbf{w}}{x} + \pdv{\symbf{w}}{y}                                        & = \symbf{V}^{-1} \symbf{B}^{-1} \symbf{c}.
+    \symbf{A} \pdv{\symbf{u}}{x} + \symbf{B} \pdv{\symbf{u}}{y}                                                                             & = \symbf{c}                                \\
+    \left( \symbf{B} \symbf{V} \symbf{\Lambda} \symbf{V}^{-1} \right) \symbf{V} \pdv{\symbf{w}}{x} + \symbf{B} \symbf{V} \pdv{\symbf{w}}{y} & = \symbf{c}                                \\
+    \symbf{B} \symbf{V} \symbf{\Lambda} \pdv{\symbf{w}}{x} + \symbf{B} \symbf{V} \pdv{\symbf{w}}{y}                                         & = \symbf{c}                                \\
+    \symbf{\Lambda} \pdv{\symbf{w}}{x} + \pdv{\symbf{w}}{y}                                                                                 & = \symbf{V}^{-1} \symbf{B}^{-1} \symbf{c},
 \end{align*}
+where we assume \(\symbf{B}\) is invertible. Here the initial conditions
+for \(\symbf{w}\) are determined by the initial conditions for
+\(\symbf{u}\):
+\begin{equation*}
+    \symbf{w}\left( x_0,\: y_0 \right) = \symbf{V}^{-1} \symbf{u}_0\left( x \right).
+\end{equation*}
 As \(\symbf{\Lambda}\) is diagonal, we can form a system of \(n\) first
-order PDEs which can be solved independently to find
-\(w_i\left( x,\: y \right)\). Upon finding these solutions, we can
-transform back to the original variable \(\symbf{u}\) using
-\(\symbf{u} = \symbf{V} \symbf{w}\).
+order PDEs which can be solved independently to find \(w_i\left( x,\: y \right)\),
+allowing us to find the solution \(\symbf{u}\left( x,\: y \right)\).
 \section{Second Order PDEs}
 Consider the general linear second order PDE in two variables:
 \begin{equation*}
@@ -392,19 +404,19 @@ Consider the general linear second order PDE in two variables:
 with the initial conditions \(u\left( x_0,\: y_0 \right) = f\left( x \right)\)
 and \(u_y\left( x_0,\: y_0 \right) = g\left( x \right)\) where variables
 \(a\) through \(f\) are functions of \(x\) and \(y\) only. We will begin
-by factoring this PDE into it's two first derivatives of \(u\),
-\(u_x = \pdv{u}{x}\) and \(u_y = \pdv{u}{y}\), to convert the second
+by factoring this PDE into it's two first derivatives
+\(u_x = \pdv{u}{x}\) and \(u_y = \pdv{u}{y}\) to convert the second
 order PDE into a system of first order PDEs:
 \begin{align*}
     a \pdv[order=2]{u}{x} + 2b \pdv{u}{y,x} + c \pdv[order=2]{u}{y} + d \pdv{u}{x} + e \pdv{u}{y} & = f                  \\
     a \pdv{u_x}{x} + 2b \pdv{u_x}{y} + c \pdv{u_y}{y} + d u_x + e u_y                             & = f                  \\
-    a \pdv{u_x}{x} + 2b \pdv{u_x}{y} + c \pdv{u_y}{y}                                             & = f - d u_x - e u_y,
+    a \pdv{u_x}{x} + 2b \pdv{u_x}{y} + c \pdv{u_y}{y}                                             & = f - d u_x - e u_y.
 \end{align*}
-where we assume Schwarz's theorem holds:
+Additionally, we will assume that Schwarz's theorem holds:
 \begin{equation*}
     \pdv{u}{y,x} = \pdv{u}{x,y} \iff \pdv{u_x}{y} = \pdv{u_y}{x}.
 \end{equation*}
-We can then form the following system of first order PDEs:
+This allows us to form the following system of first order PDEs:
 \begin{equation*}
     \begin{bmatrix}
         a & 0 \\
@@ -430,13 +442,14 @@ We can then form the following system of first order PDEs:
         f - d u_x - e u_y \\
         0
     \end{bmatrix}
-    .
+    ,
 \end{equation*}
-This system can now be solved using the process described in the
-previous section, where the initial condition for \(u_x\) is simply
+which can be solved using the process described in the previous section,
+where the initial condition for \(u_x\) is simply
 \(u_x\left( x_0,\: y_0 \right) = f'\left( x \right)\).
 \subsection{Classification of Second Order PDEs}
-The eigenvalue problem for this system is given by:
+Using the above form, we can determine the characteristic equation for
+a second order PDE:
 \begin{equation*}
     \begin{vmatrix}
         a - 2b \lambda & -c       \\
@@ -444,12 +457,12 @@ The eigenvalue problem for this system is given by:
     \end{vmatrix}
     = a \lambda^2 - 2b \lambda + c = 0,
 \end{equation*}
-and the eigenvalues are given by:
+where the eigenvalues \(\lambda\) are given by:
 \begin{equation*}
     \lambda = \frac{2b \pm \sqrt{4b^2 - 4ac}}{2a} = \frac{b \pm \sqrt{b^2 - ac}}{a}.
 \end{equation*}
-We can classify this second order PDE into 3 types based on the
-discriminant \(b^2 - ac\):
+We can classify this second order PDE into 3 types based on the sign of
+the discriminant \(b^2 - ac\):
 \begin{itemize}
     \item \textbf{Hyperbolic}: (two real distinct eigenvalues)
           \begin{equation*}
@@ -464,4 +477,17 @@ discriminant \(b^2 - ac\):
               b^2 - ac < 0.
           \end{equation*}
 \end{itemize}
+\subsection{D'Alembert's Solution}
+D'Alembert's solution is a general solution to the one-dimensional wave
+equation
+\begin{equation*}
+    \pdv[order=2]{u}{t} = c^2 \pdv[order=2]{u}{x}, \quad -\infty < x < \infty, \quad t > 0,
+\end{equation*}
+with initial conditions \(u\left( x,\: 0 \right) = f\left( x \right)\)
+and \(u_t\left( x,\: 0 \right) = g\left( x \right)\). Using the
+techniques above, it can be shown that the general solution to this PDE
+has the form:
+\begin{equation*}
+    u\left( x,\: t \right) = \frac{1}{2} \left[ f\left( x + c t \right) + f\left( x - c t \right) \right] + \frac{1}{2c} \int_{x - c t}^{x + c t} g\left( s \right) \odif{s}.
+\end{equation*}
 \end{document}
