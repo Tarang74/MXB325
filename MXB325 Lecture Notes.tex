@@ -321,8 +321,7 @@ parametric initial condition:
 \begin{equation*}
     u\left( 0 \right) = u_0\left( \xi \right) \quad \text{on} \quad x\left( 0 \right) = x_0\left( \xi \right) \quad \text{and} \quad y\left( 0 \right) = y_0\left(\xi \right).
 \end{equation*}
-with the parameter \(\xi\)\footnote{\(\xi\) is introduced to parametrise
-    the variable \(x\) in the initial condition.}. The resulting parametric
+where \(\xi\) parametrises the initial condition. The resulting parametric
 equations \(x\left( s \right)\) and \(y\left( s \right)\) form
 \textit{characteristics} for the PDE, which allows us to determine the
 value of \(u\left( x,\: y \right)\) along the curve for specific values
@@ -336,6 +335,70 @@ dependence} for points in each region to determine the value of the
 solution \(u\) by walking backward along these curves. Doing so allows
 us to understand how the solution behaves along different
 characteristics without needing to plot the entire solution surface.
+\subsubsection{Expansion Waves}
+Consider a quasi-linear PDE of the form
+\begin{equation*}
+    a\left( x,\: t,\: u \right) \pdv{u}{x} + \pdv{u}{t} = c\left( x,\: t,\: u \right)
+\end{equation*}
+with the initial condition:
+\begin{equation*}
+    u\left( x_0,\: 0 \right) =
+    \begin{cases}
+        u_0, & x_0 < 0, \\
+        u_1, & x_0 > 0,
+    \end{cases}
+\end{equation*}
+where \(u_0 < u_1\). The nature of this initial condition causes
+characteristics to change slope when \(x_0 = 0\), so that they fan
+outwards from this point, resulting in an \textit{expansion wave}. For
+the solution to be defined at all points, we assume that
+\(u\left( x_0,\: 0 \right)\) takes all values between \(u_0\) and \(u_1\),
+on \(x\left( s \right)\). This means that as time increases, the
+discontinuity in the initial condition spreads along the \(x\)-axis.
+\subsubsection{Shock Waves}
+Consider a quasi-linear PDE of the form
+\begin{equation*}
+    a\left( x,\: t,\: u \right) \pdv{u}{x} + \pdv{u}{t} = c\left( x,\: t,\: u \right)
+\end{equation*}
+with the initial condition:
+\begin{equation*}
+    u\left( x_0,\: 0 \right) =
+    \begin{cases}
+        u_0, & x_0 < 0, \\
+        u_1, & x_0 > 0,
+    \end{cases}
+\end{equation*}
+where \(u_0 > u_1\) instead. The nature of this initial condition causes
+characteristics to change slope at the point \(x_0 = 0\), where the
+slopes of characteristics for \(x_0 < 0\) are steeper than those when
+\(x_0 > 0\), resulting in an intersection of characteristics.
+This results in a \textit{shock} in the solution, so that the value \(u_0\)
+overtakes \(u_1\) as time increases, leading to a multi-valued solution.
+
+If the solution must be single-valued, we must assume that the total
+flow \(q = u v\) is conserved across the \textit{shock wave}
+\(x_s\left( s \right)\), so that the flow from the left into the moving
+shock wave equals the flow to the right away from the shock wave. In
+this form, \(v\) is the velocity of the function \(u\left( x,\: t
+\right)\), which we can find by expressing the PDE as
+\begin{equation*}
+    \pdv{u}{t} + \pdv{q}{x} = c\left( x,\: t,\: u \right).
+\end{equation*}
+Mathematically,
+\begin{align*}
+    \left[ v\left( x_s^-,\: t \right) - x_s'\left( s \right) \right] u\left( x_s^-,\: t \right)             & = \left[ v\left( x_s^+,\: t \right) - x_s'\left( s \right) \right] u\left( x_s^+,\: t \right)                              \\
+    v\left( x_s^-,\: t \right) u\left( x_s^-,\: t \right) - x_s'\left( s \right) u\left( x_s^-,\: t \right) & = v\left( x_s^+,\: t \right) u\left( x_s^+,\: t \right) - x_s'\left( s \right) u\left( x_s^+,\: t \right)                  \\
+    x_s'\left( s \right) u\left( x_s^+,\: t \right) - x_s'\left( s \right) u\left( x_s^-,\: t \right)       & = q\left( x_s^+,\: t \right) - q\left( x_s^-,\: t \right)                                                                  \\
+    x_s'\left( s \right)                                                                                    & = \frac{q\left( x_s^+,\: t \right) - q\left( x_s^-,\: t \right)}{u\left( x_s^+,\: t \right) - u\left( x_s^-,\: t \right)}.
+\end{align*}
+Or, more compactly,
+\begin{equation*}
+    x_s'\left( s \right) = \frac{q^+ - q^-}{u^+ - u^-} = \frac{\left[ q \right]}{\left[ u \right]} = \frac{\text{jump in flow}}{\text{jump in value}}.
+\end{equation*}
+By solving for the shock wave \(x_s\left( s \right)\) at \(x_0 = 0\), it
+follows that the characteristics with constant values will appear on
+either side of the shock wave, where the solution is single-valued,
+meeting at the shock wave.
 \section{System of First Order PDEs}
 Consider an \(n \times n\) coupled system of first order PDEs:
 \begin{equation*}
