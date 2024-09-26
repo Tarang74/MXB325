@@ -19,11 +19,11 @@
 
 % Copyright
 \usepackage[
-    type={CC},
-    modifier={by-nc-sa},
-    version={4.0},
-    imagewidth={5em},
-    hyphenation={raggedright}
+  type={CC},
+  modifier={by-nc-sa},
+  version={4.0},
+  imagewidth={5em},
+  hyphenation={raggedright}
 ]{doclicense}
 
 \date{}
@@ -340,19 +340,11 @@ Consider a quasi-linear PDE of the form
 \begin{equation*}
     a\left( x,\: t,\: u \right) \pdv{u}{x} + \pdv{u}{t} = c\left( x,\: t,\: u \right)
 \end{equation*}
-with the initial condition:
-\begin{equation*}
-    u\left( x_0,\: 0 \right) =
-    \begin{cases}
-        u_0, & x_0 < 0, \\
-        u_1, & x_0 > 0,
-    \end{cases}
-\end{equation*}
-where \(u_0 < u_1\). The nature of this initial condition causes
+with some initial condition. If this initial condition causes
 characteristics to change slope when \(x_0 = 0\), so that they fan
-outwards from this point, resulting in an \textit{expansion wave}. For
-the solution to be defined at all points, we assume that
-\(u\left( x_0,\: 0 \right)\) takes all values between \(u_0\) and \(u_1\),
+outwards from this point, the region is called an \textit{expansion wave}.
+For the solution to be defined at all points, we assume that
+\(u\left( x_0,\: 0 \right)\) takes all values between \(u\left( x_0^-,\: 0 \right)\) and \(u\left( x_0^+,\: 0 \right)\),
 on \(x\left( s \right)\). This means that as time increases, the
 discontinuity in the initial condition spreads along the \(x\)-axis.
 \subsubsection{Shock Waves}
@@ -360,45 +352,12 @@ Consider a quasi-linear PDE of the form
 \begin{equation*}
     a\left( x,\: t,\: u \right) \pdv{u}{x} + \pdv{u}{t} = c\left( x,\: t,\: u \right)
 \end{equation*}
-with the initial condition:
-\begin{equation*}
-    u\left( x_0,\: 0 \right) =
-    \begin{cases}
-        u_0, & x_0 < 0, \\
-        u_1, & x_0 > 0,
-    \end{cases}
-\end{equation*}
-where \(u_0 > u_1\) instead. The nature of this initial condition causes
+with some initial condition. If this initial condition causes
 characteristics to change slope at the point \(x_0 = 0\), where the
 slopes of characteristics for \(x_0 < 0\) are steeper than those when
-\(x_0 > 0\), resulting in an intersection of characteristics.
-This results in a \textit{shock} in the solution, so that the value \(u_0\)
-overtakes \(u_1\) as time increases, leading to a multi-valued solution.
-
-If the solution must be single-valued, we must assume that the total
-flow \(q = u v\) is conserved across the \textit{shock wave}
-\(x_s\left( s \right)\), so that the flow from the left into the moving
-shock wave equals the flow to the right away from the shock wave. In
-this form, \(v\) is the velocity of the function \(u\left( x,\: t
-\right)\), which we can find by expressing the PDE as
-\begin{equation*}
-    \pdv{u}{t} + \pdv{q}{x} = c\left( x,\: t,\: u \right).
-\end{equation*}
-Mathematically,
-\begin{align*}
-    \left[ v\left( x_s^-,\: t \right) - x_s'\left( s \right) \right] u\left( x_s^-,\: t \right)             & = \left[ v\left( x_s^+,\: t \right) - x_s'\left( s \right) \right] u\left( x_s^+,\: t \right)                              \\
-    v\left( x_s^-,\: t \right) u\left( x_s^-,\: t \right) - x_s'\left( s \right) u\left( x_s^-,\: t \right) & = v\left( x_s^+,\: t \right) u\left( x_s^+,\: t \right) - x_s'\left( s \right) u\left( x_s^+,\: t \right)                  \\
-    x_s'\left( s \right) u\left( x_s^+,\: t \right) - x_s'\left( s \right) u\left( x_s^-,\: t \right)       & = q\left( x_s^+,\: t \right) - q\left( x_s^-,\: t \right)                                                                  \\
-    x_s'\left( s \right)                                                                                    & = \frac{q\left( x_s^+,\: t \right) - q\left( x_s^-,\: t \right)}{u\left( x_s^+,\: t \right) - u\left( x_s^-,\: t \right)}.
-\end{align*}
-Or, more compactly,
-\begin{equation*}
-    x_s'\left( s \right) = \frac{q^+ - q^-}{u^+ - u^-} = \frac{\left[ q \right]}{\left[ u \right]} = \frac{\text{jump in flow}}{\text{jump in value}}.
-\end{equation*}
-By solving for the shock wave \(x_s\left( s \right)\) at \(x_0 = 0\), it
-follows that the characteristics with constant values will appear on
-either side of the shock wave, where the solution is single-valued,
-meeting at the shock wave.
+\(x_0 > 0\), we have an intersection of characteristics.
+This results in a \textit{shock} in the solution, so that the solution
+overtakes itself as time increases, leading to a multi-valued solution.
 \section{System of First Order PDEs}
 Consider an \(n \times n\) coupled system of first order PDEs:
 \begin{equation*}
@@ -553,4 +512,377 @@ has the form:
 \begin{equation*}
     u\left( x,\: t \right) = \frac{1}{2} \left[ f\left( x + c t \right) + f\left( x - c t \right) \right] + \frac{1}{2c} \int_{x - c t}^{x + c t} g\left( s \right) \odif{s}.
 \end{equation*}
+\section{Conservation of Mass}\label{sec:conservation-of-mass}
+Consider the flow of some mass in a one-dimensional channel between \(x
+= a\) and \(x = b\). Let \(v = v\left( x,\: t \right)\) be the velocity
+of the flow, and \(\rho = \rho\left( x,\: t \right)\) be the density of
+the flow, where velocity has units: length per time, and density has
+units: mass over volume. Then, the mass flux \(q = q\left( x,\: t
+\right)\) is defined as \(q = \rho v\), which has units: mass per unit
+time per unit area.
+
+The mass of the fluid per unit area between \(x = a\) and \(x = b\) is
+given by the integral,
+\begin{equation*}
+    \int_a^b \rho \odif{x}.
+\end{equation*}
+Additionally, this mass is a dynamic quantity that depends on the flux
+in at \(x = a\) given by:
+\begin{equation*}
+    \left. q \right|_{x = a}
+\end{equation*}
+and the mass flux out at \(x = b\) given by:
+\begin{equation*}
+    \left. q \right|_{x = b}.
+\end{equation*}
+The conservation of mass argument for this mass is a relationship
+between these fluxes and the rate of change of mass in the channel:
+\begin{align*}
+    \odv*{\int_a^b \rho \odif{x}}{t}                & = \left. q \right|_{x = a} - \left. q \right|_{x = b} \\
+    \int_a^b \pdv{\rho}{t} \odif{x}                 & = \int_b^a \pdv{q}{x} \odif{x}                        \\
+    \int_a^b \pdv{\rho}{t} \odif{x}                 & = - \int_a^b \pdv{q}{x} \odif{x}                      \\
+    \pdv{\rho}{t}                                   & = - \pdv{q}{x}                                        \\
+    \pdv{\rho}{t} + \pdv{q}{x}                      & = 0                                                   \\
+    \pdv{\rho}{t} + \pdv*{\left( \rho v \right)}{x} & = 0.
+\end{align*}
+We can also allow \(a\) and \(b\) to be functions of time, where we can
+apply Leibniz integral rule to arrive at the same result on the interval
+\(a\left( t \right) < x < b\left( t \right)\).
+\subsection{Traffic Flow}
+Consider a simple model for traffic flow where \(\rho\) is the density
+of the flow of cars (number of cars per unit length), and \(q\) is the
+flux of cars (number of cars per unit time), where \(q = \rho v\)
+(\(v\) velocity). The number of cars between \(x = a\) and \(x = b\) is
+given by:
+\begin{equation*}
+    \int_a^b \rho \odif{x},
+\end{equation*}
+the flux of cars in at \(x = a\) is given by \(\left. q \right|_{x = a}\),
+and the flux of cars out at \(x = b\) is given by \(\left. q \right|_{x = b}\).
+Then, for the conservation of the number of cars, we must have that:
+\begin{equation*}
+    \pdv{\rho}{t} + \pdv{q}{x} = 0.
+\end{equation*}
+This model is a PDE with two unknown variables, \(\rho\) and \(q\).
+To close this system, we must introduce a constitutive relationship
+between \(\rho\) and \(q\) (or between \(\rho\) and \(v\)), which is
+determined through empirical analysis.
+\subsection{Shock Solutions}
+If a quasi-linear PDE inhibits a shock wave, and we desire a
+single-valued solution instead, we can introduce a discontinuity in the
+solution. To do so, we must assume that the total flow \(q = u v\) is
+conserved across the \textit{shock wave} \(x_s\left( t \right)\), so
+that the flow from the left into the moving shock wave equals the flow
+to the right away from the shock wave.
+
+Suppose conservation of mass holds between \(x = a\) and \(x = b\),
+except at a shock wave at \(x = x_s\left( t \right)\), across which
+both \(u\) and \(q\) are discontinuous. We can still expect a weak form
+of conservation of mass to hold across the shock wave,
+\begin{equation*}
+    \odv*{\int_a^b u \odif{x}}{t} = \left. q \right|_{x = a} - \left. q \right|_{x = b}.
+\end{equation*}
+Consider dividing this integral into two regions that do not contain
+the shock wave. Then, using Leibniz's rule, we find
+\begin{align*}
+    \odv*{\int_a^b u \odif{x}}{t} & = \odv*{\int_a^{x_s^{-}\left( t \right)} u \odif{x}}{t} + \odv*{\int_{x_s^{+}\left( t \right)}^b u \odif{x}}{t}                                                                                       \\
+                                  & = \int_a^{x_s^{-}\left( t \right)} \pdv{u}{t} \odif{x} + \left. u \right|_{x = x^{-}} \odv{x_s}{t} + \int_{x_s^{+}\left( t \right)}^b \pdv{u}{t} \odif{x} - \left. u \right|_{x = x^{+}} \odv{x_s}{t}
+\end{align*}
+For the RHS, we can use the fundamental theorem of calculus to find:
+\begin{align*}
+    \left. q \right|_{x = a} - \left. q \right|_{x = b} & = \left. q \right|_{x = a} - \left. q \right|_{x = x^{-}} + \left. q \right|_{x = x^{+}} - \left. q \right|_{x = b} + \left. q \right|_{x = x^{-}} - \left. q \right|_{x = x^{+}} \\
+                                                        & = \left. q \right|_{x = x^{-}}^{x = a} + \left. q \right|_{x = b}^{x = x^{+}} + \left. q \right|_{x = x^{-}} - \left. q \right|_{x = x^{+}}                                       \\
+                                                        & = \int_{x_s^{-}\left( t \right)}^a \pdv{q}{x} \odif{x} + \int_b^{x_s^{+}\left( t \right)} \pdv{q}{x} \odif{x} + \left. q \right|_{x = x^{-}} - \left. q \right|_{x = x^{+}}       \\
+                                                        & = -\int_a^{x_s^{-}\left( t \right)} \pdv{q}{x} \odif{x} - \int_{x_s^{+}\left( t \right)}^b \pdv{q}{x} \odif{x} + \left. q \right|_{x = x^{-}} - \left. q \right|_{x = x^{+}}.
+\end{align*}
+By equating the LHS and RHS, we find
+\begin{align*}
+    \int_a^{x_s^{-}\left( t \right)} \pdv{u}{t} + \pdv{q}{x} \odif{x} + \int_{x_s^{+}\left( t \right)}^b \pdv{u}{t} + \pdv{q}{x} \odif{x} + \left. u \right|_{x = x^{-}} \odv{x_s}{t} - \left. u \right|_{x = x^{+}} \odv{x_s}{t} & = \left. q \right|_{x = x^{-}} - \left. q \right|_{x = x^{+}}                                                                      \\
+    \odv{x_s}{t} \left[ \left. u \right|_{x = x^{-}} - \left. u \right|_{x = x^{+}} \right]                                                                                                                                       & = \left. q \right|_{x = x^{-}} - \left. q \right|_{x = x^{+}}                                                                      \\
+    \odv{x_s}{t}                                                                                                                                                                                                                  & = \frac{\left. q \right|_{x = x^{-}} - \left. q \right|_{x = x^{+}}}{\left. u \right|_{x = x^{-}} - \left. u \right|_{x = x^{+}}}.
+\end{align*}
+Or, more compactly,
+\begin{equation*}
+    x_s'\left( t \right) = \frac{q^+ - q^-}{u^+ - u^-} = \frac{\left[ q \right]}{\left[ u \right]} = \frac{\text{jump in flow}}{\text{jump in value}}.
+\end{equation*}
+By solving for the shock wave \(x_s\left( t \right)\), we can divide
+the solution into two regions, one on either side of the shock wave.
+Characteristics will then meet at this shock wave leading to a
+single-valued solution. Note this solution does not have a derivative at
+the shock wave, and the shock solution is not unique.
+\subsection{Caustics}
+If the characteristics of a PDE intersect along some curve not arising
+from the \(x\)-axis, we have a \textit{caustic}. Such characteristics
+may lead to more than 2 values for the solution. When determining a
+shock solution for such cases, we must consider the time \(t_s\) at
+which the solution first becomes multi-valued. \(t_s\) is the time at
+which the slope:
+\begin{equation*}
+    \pdv{u}{x} = \frac{\pdv{u}{\xi}}{\pdv{x\left( s \right)}{\xi}}
+\end{equation*}
+becomes infinite. This can be found by solving for the value of \(s\) at
+which the denominator of the above expression becomes zero. If we call
+this value \(s_{\text{caustic}}\), we can parametrically define the
+caustic as:
+\begin{equation*}
+    \symbf{x}_{\text{caustic}}\left( \xi \right) =
+    \begin{bmatrix}
+        x\left( s_{\text{caustic}} \right) \\
+        t\left( s_{\text{caustic}} \right)
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        x_{\text{caustic}} \left( \xi \right) \\
+        t_{\text{caustic}} \left( \xi \right)
+    \end{bmatrix}
+\end{equation*}
+We can then use the tangent vector \(\symbf{x}_{\text{caustic}}'\left( \xi \right)\)
+to determine the minimum of this curve to find the first time \(t_s\) at
+which the solution becomes multi-valued. When solving for the shock
+\(x_s\left( t \right)\) as outlined in the previous section, we can use
+this initial value to find the constant of integration.
+\subsection{Higher-Order Terms}
+If we wish for a shock to be resolved without a jump discontinuity, we
+can introduce higher-order terms into the PDE that will smooth out the
+solution.
+\part{Viscous Flow}
+In the following sections, we will discuss the viscous flow of
+incompressible Newtonian fluids. We will begin by deriving the governing
+equations for fluid flow using methods from continuum mechanics. Here we
+treat fluids as continuous media, where fluid properties are described
+by fields that vary continuously in space and time.
+\section{Continuum Mechanics}
+\subsection{Material Derivative}
+Consider the temporal rate of change of a quantity which follows the
+motion of a fluid particle at position \(\symbf{r}\left( x,\: y,\: z,\:
+t \right)\). We cannot simply take the partial derivative of the field
+with respect to time as it is not fixed in space. Instead, we will
+introduce the \textit{material derivative}, which accounts for the
+change in a field as a fluid particle moves through space. We will
+motivate this definition by deriving the acceleration of a fluid
+particle. Using the limit definition of the derivative, we find:
+\begin{equation*}
+    \symbf{a}\left( x,\: y,\: z,\: t \right) = \lim_{\adif{t} \to 0} \frac{\symbf{q}\left( x + \adif{x},\: y + \adif{y},\: z + \adif{z},\: t + \adif{t} \right) - \symbf{q}\left( x,\: y,\: z,\: t \right)}{\Delta t},
+\end{equation*}
+where \(\symbf{q}\) is the velocity field of the fluid, defined:
+\begin{equation*}
+    \symbf{q}\left( x,\: y,\: z,\: t \right) =
+    \begin{bmatrix}
+        u\left( x,\: y,\: z,\: t \right) \\
+        v\left( x,\: y,\: z,\: t \right) \\
+        w\left( x,\: y,\: z,\: t \right)
+    \end{bmatrix}
+    =
+    \odv{\symbf{r}}{t}.
+\end{equation*}
+Notice that a small step in time has also resulted in a small step in
+space. Let us therefore use the Taylor series expansion of the velocity
+field to simplify the numerator of the above expression to:
+\begin{equation*}
+    \symbf{q}\left( x + \adif{x},\: y + \adif{y},\: z + \adif{z},\: t + \adif{t} \right) = \symbf{q}\left( x,\: y,\: z,\: t \right) + \pdv{\symbf{q}}{x} \adif{x} + \pdv{\symbf{q}}{y} \adif{y} + \pdv{\symbf{q}}{z} \adif{z} + \pdv{\symbf{q}}{t} \adif{t} + \ldots,
+\end{equation*}
+where we are evaluating the velocity field at the point \(\left( x,\:
+y,\: z,\: t \right)\). Substituting this into the numerator, we find:
+\begin{align*}
+    \symbf{a}\left( x,\: y,\: z,\: t \right) & = \lim_{\adif{t} \to 0} \left[ \pdv{\symbf{q}}{x} \adv{x}{t} + \pdv{\symbf{q}}{y} \adv{y}{t} + \pdv{\symbf{q}}{z} \adv{z}{t} + \pdv{\symbf{q}}{t} + \ldots \right] \\
+                                             & = \pdv{\symbf{q}}{x} \odv{x}{t} + \pdv{\symbf{q}}{y} \odv{y}{t} + \pdv{\symbf{q}}{z} \odv{z}{t} + \pdv{\symbf{q}}{t}                                               \\
+                                             & = \pdv{\symbf{q}}{x} u + \pdv{\symbf{q}}{y} v + \pdv{\symbf{q}}{z} w + \pdv{\symbf{q}}{t}                                                                          \\
+                                             & = \pdv{\symbf{q}}{t} + u \pdv{\symbf{q}}{x} + v \pdv{\symbf{q}}{y} + w \pdv{\symbf{q}}{z}                                                                          \\
+                                             & = \pdv{\symbf{q}}{t} + \left( u \pdv{}{x} + v \pdv{}{y} + w \pdv{}{z} \right) \symbf{q}                                                                            \\
+                                             & = \pdv{\symbf{q}}{t} + \left( \symbf{q} \cdot \symbf{\nabla} \right) \symbf{q}.
+\end{align*}
+\begin{definition}[Material Derivative]
+    The rate of change of a quantity as observed from a moving reference
+    frame following a fluid particle can be expressed as the material
+    derivative of the quantity. This operator is denoted as:
+    \begin{equation*}
+        \mdv{}{t} = \pdv{}{t} + \symbf{q} \cdot \symbf{\nabla}.
+    \end{equation*}
+\end{definition}
+Therefore, we can express the acceleration of a fluid particle in a
+moving reference frame as:
+\begin{equation*}
+    \symbf{a} = \mdv{\symbf{q}}{t}.
+\end{equation*}
+\subsection{Conservation of Mass}
+Let us now consider what a conservation of mass argument would look
+like for a fluid. For a control volume \(V\), the total mass of the
+fluid is given by the integral:
+\begin{equation*}
+    M = \iiint_V \rho \odif{V},
+\end{equation*}
+where \(\rho = \rho\left( x,\: y,\: z,\: t \right)\) is the density of
+the fluid. As we saw in the previous
+section, we want the rate of change of mass to be equal to the net flux
+of fluid into the control volume. This can be expressed using a surface
+integral over the surface of the control volume:
+\begin{equation*}
+    \odv{M}{t} = -\oiint_{\partial V} \rho \left( \symbf{q} \cdot \symbf{n} \right) \odif{\symbf{\sigma}},
+\end{equation*}
+where \(\symbf{n}\) is the outward unit normal vector to the surface of
+the control volume, and \(\odif{\symbf{\sigma}}\) is the differential
+area element. By applying the divergence theorem, we can rewrite this
+surface integral as:
+\begin{equation*}
+    \odv*{\iiint_V \rho \odif{V}}{t} = -\iiint_V \symbf{\nabla} \cdot \left( \rho \symbf{q} \right) \odif{V}.
+\end{equation*}
+As the control volume is arbitrary and fixed, we can apply Leibniz's
+integral rule to find:
+\begin{align*}
+    \iiint_V \pdv{\rho}{t} \odif{V} + \iiint_V \symbf{\nabla} \cdot \left( \rho \symbf{q} \right) \odif{V} & = 0  \\
+    \iiint_V \left( \pdv{\rho}{t} + \symbf{\nabla} \cdot \left( \rho \symbf{q} \right) \right) \odif{V}    & = 0  \\
+    \pdv{\rho}{t} + \symbf{\nabla} \cdot \left( \rho \symbf{q} \right)                                     & = 0.
+\end{align*}
+We can alternatively express this in terms of the material derivative,
+by expanding the divergence term:
+\begin{align*}
+    \pdv{\rho}{t} + \symbf{\nabla} \cdot \left( \rho \symbf{q} \right)                                                        & = 0  \\
+    \pdv{\rho}{t} + \odv{\rho u}{x} + \odv{\rho v}{y} + \odv{\rho w}{z}                                                       & = 0  \\
+    \pdv{\rho}{t} + \odv{\rho}{x} u + \rho \odv{u}{x} + \odv{\rho}{y} v + \rho \odv{v}{y} + \odv{\rho}{z} w + \rho \odv{w}{z} & = 0  \\
+    \pdv{\rho}{t} + \odv{\rho}{x} u + \odv{\rho}{y} v + \odv{\rho}{z} w + \rho \odv{u}{x} + \rho \odv{v}{y} + \rho \odv{w}{z} & = 0  \\
+    \pdv{\rho}{t} + \symbf{\nabla} \rho \cdot \symbf{q} + \rho \symbf{\nabla} \cdot \symbf{q}                                 & = 0  \\
+    \mdv{\rho}{t} + \rho \symbf{\nabla} \cdot \symbf{q}                                                                       & = 0.
+\end{align*}
+This result is known as the \textit{continuity equation} and expresses
+the conservation of mass for a fluid.
+\subsection{Conservation of Momentum}
+Let us now consider the conservation of momentum for a fluid. Using
+Newton's second law of motion, we can express the rate of change in
+momentum as the sum of the forces acting on the fluid. For a control
+volume \(V\), the rate of change in momentum of a fluid is given by
+the integral:
+\begin{equation*}
+    \odv*{\iiint_V \rho \symbf{q} \odif{V}}{t} = \symbf{F}.
+\end{equation*}
+Here, \(\symbf{F}\) is the total force acting on the fluid, per unit
+volume. In a fluid, we can decompose this force into the sum of
+\textbf{body forces} \(\symbf{F}_b\), and \textbf{surface forces}
+\(\symbf{F}_s\), that act on some differential fluid element \(\odif{V}\).
+Body forces are uniformally distributed through an element and can
+include gravitational forces, electromagnetic forces, coriolis forces,
+etc. Here we will denote this generally as:
+\begin{equation*}
+    \odif{\symbf{F}_b} = \rho \symbf{g} \odif{V} \implies \symbf{F}_b = \iiint_V \rho \symbf{g} \odif{V},
+\end{equation*}
+where \(\symbf{g}\) is the acceleration due to some external body force.
+Note that we do not multiply this by the mass of the fluid element, as
+we are considering the force per unit volume. Surface forces act on the
+surface of the fluid element and include pressure and viscous forces.
+Here we will introduce the \textbf{total stress tensor} \(\symbf{\sigma}\)
+which is the sum of \textbf{viscous stresses} \(\symbf{\tau}\) that
+act both tangentially and normally to the surface of the fluid element,
+and hydrostatic \textbf{pressures} \(p\) that act normally to the
+surface of the fluid element. We can express this in component form as:
+\begin{equation*}
+    \sigma_{ij} = -p \delta_{ij} + \tau_{ij},
+\end{equation*}
+where \(\delta_{ij}\) is the Kronecker delta, or, using matrix notation:
+\begin{align*}
+    \begin{bmatrix}
+        \sigma_{xx} & \sigma_{yx} & \sigma_{zx} \\
+        \sigma_{xy} & \sigma_{yy} & \sigma_{zy} \\
+        \sigma_{xz} & \sigma_{yz} & \sigma_{zz}
+    \end{bmatrix}
+                   & =
+    \begin{bmatrix}
+        -p + \tau_{xx} & \tau_{yx}      & \tau_{zx}      \\
+        \tau_{xy}      & -p + \tau_{yy} & \tau_{zy}      \\
+        \tau_{xz}      & \tau_{yz}      & -p + \tau_{zz}
+    \end{bmatrix}
+    \\
+    \symbf{\sigma} & = -p \symbf{I} + \symbf{\tau}.
+\end{align*}
+The subscript \(\sigma_{ij}\) denotes a stress in the \(j\) direction
+acting on a surface element with normal in the \(i\) direction. To find
+the total surface force acting on a fluid element, consider all the
+forces acting in the \(x\)-direction:
+\begin{equation*}
+    \odif{\symbf{F}_{sx}} = \left( - \sigma_{xx} + \sigma_{x+\adif{x},x} \right) \adif{y} \adif{z} + \left( - \sigma_{yx} + \sigma_{y+\adif{y},x} \right) \adif{x} \adif{z} + \left( - \sigma_{zx} + \sigma_{z+\adif{z},x} \right) \adif{x} \adif{y},
+\end{equation*}
+If we use the first-order Taylor expansion on these terms, this
+simplifies to:
+\begin{align*}
+    \odif{\symbf{F}_{sx}} & = \pdv{\sigma_{xx}}{x} \adif{x} \adif{y} \adif{z} + \pdv{\sigma_{yx}}{y} \adif{y} \adif{x} \adif{z} + \pdv{\sigma_{zx}}{z} \adif{z} \adif{x} \adif{y} \\
+                          & = \left( \pdv{\sigma_{xx}}{x} + \pdv{\sigma_{yx}}{y} + \pdv{\sigma_{zx}}{z} \right) \adif{V}.
+\end{align*}
+Therefore, for all three directions, we find:
+\begin{align*}
+    \odif{\symbf{F}_{sx}} & = \left( \pdv{\sigma_{xx}}{x} + \pdv{\sigma_{yx}}{y} + \pdv{\sigma_{zx}}{z} \right) \adif{V}, \\
+    \odif{\symbf{F}_{sy}} & = \left( \pdv{\sigma_{xy}}{x} + \pdv{\sigma_{yy}}{y} + \pdv{\sigma_{zy}}{z} \right) \adif{V}, \\
+    \odif{\symbf{F}_{sz}} & = \left( \pdv{\sigma_{xz}}{x} + \pdv{\sigma_{yz}}{y} + \pdv{\sigma_{zz}}{z} \right) \adif{V},
+\end{align*}
+written compactly as:
+\begin{equation*}
+    \odif{\symbf{F}_{si}} = \symbf{\nabla} \cdot \symbf{\sigma}_i^\top \odif{V}, \quad \text{where } \symbf{\sigma}_i = -p \symbf{e}_i^\top + \symbf{\tau}_i, \quad \text{for } i = x,\: y,\: z.
+\end{equation*}
+Here \(\symbf{\sigma}_i\) is the \(i\)-th row of the total stress tensor,
+\(\symbf{e}_i\) is the \(i\)-th unit vector, and \(\symbf{\tau}_i\) is
+the \(i\)-th row of the viscous stress tensor.
+For Newtonian fluids, the viscous stress tensor can be related to the
+velocity field of a fluid, by the \textit{Newtonian law of viscosity},
+which states that the viscous stress is proportional to the rate of
+strain of the fluid. This can be expressed as:
+\begin{equation*}
+    \tau_{ij} = \mu \left( \pdv{q_i}{x_j} + \pdv{q_j}{x_i} \right) \implies \symbf{\tau}_i = \mu
+    \begin{bmatrix}
+        \displaystyle \pdv{q_i}{x} + \pdv{u}{x_i} &
+        \displaystyle \pdv{q_i}{y} + \pdv{v}{x_i} &
+        \displaystyle \pdv{q_i}{z} + \pdv{w}{x_i}
+    \end{bmatrix},
+\end{equation*}
+where \(\mu\) is the dynamic viscosity of the fluid and \(q_i\) is the
+\(i\)-th component of the velocity field. This allows us to express the
+total surface force acting on the fluid element in the \(i\)-th
+direction as:
+\begin{align*}
+    \odif{\symbf{F}_{si}} & = \symbf{\nabla} \cdot \left( -p \symbf{e}_i + \symbf{\tau}_i^\top \right) \odif{V}                                                  \\
+                          & = \left( - \pdv{p}{x_i} + \symbf{\nabla} \cdot \symbf{\tau}_i^\top \right) \odif{V}                                                  \\
+                          & = \left( - \pdv{p}{x_i} + \mu \symbf{\nabla} \cdot
+    \begin{bmatrix}
+        \displaystyle \pdv{q_i}{x} + \pdv{u}{x_i} \\
+        \displaystyle \pdv{q_i}{y} + \pdv{v}{x_i} \\
+        \displaystyle \pdv{q_i}{z} + \pdv{w}{x_i}
+    \end{bmatrix}
+    \right) \odif{V}                                                                                                                                             \\
+                          & = \left( - \pdv{p}{x_i} + \mu \left(
+        \pdv[order=2]{q_i}{x} + \pdv{u}{x,x_i} +
+        \pdv[order=2]{q_i}{y} + \pdv{v}{y,x_i} +
+        \pdv[order=2]{q_i}{z} + \pdv{w}{z,x_i}
+    \right) \right) \odif{V}                                                                                                                                     \\
+                          & = \left( - \pdv{p}{x_i} + \mu \left(
+        \pdv[order=2]{q_i}{x} + \pdv[order=2]{q_i}{y} + \pdv[order=2]{q_i}{z} +
+        \pdv{u}{x,x_i} + \pdv{v}{y,x_i} + \pdv{w}{z,x_i}
+    \right) \right) \odif{V}                                                                                                                                     \\
+                          & = \left( - \pdv{p}{x_i} + \mu \symbf{\nabla}^2 q_i + \mu \symbf{\nabla} \cdot \pdv{\symbf{q}}{x_i} \right) \odif{V}                  \\
+                          & = \left( - \pdv{p}{x_i} + \mu \symbf{\nabla}^2 q_i + \mu \pdv*{\left( \symbf{\nabla} \cdot \symbf{q} \right)}{x_i} \right) \odif{V}.
+\end{align*}
+By combining all three directions, we can write this using the gradient
+operator:
+\begin{equation*}
+    \odif{\symbf{F}_s} = \left( -\symbf{\nabla} p + \mu \symbf{\nabla}^2 \symbf{q} + \mu \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right) \right) \odif{V}.
+\end{equation*}
+By integrating this over the control volume, we find that the total
+surface force acting on the fluid element is:
+\begin{equation*}
+    \symbf{F}_s = \iiint_V \left( -\symbf{\nabla} p + \mu \symbf{\nabla}^2 \symbf{q} + \mu \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right) \right) \odif{V}.
+\end{equation*}
+Therefore, the conservation of momentum in a fluid can be expressed as:
+\begin{align*}
+    \odv*{\iiint_V \rho \symbf{q} \odif{V}}{t}        & = \symbf{F}_b + \symbf{F}_s                                                                                                                                             \\
+    \iiint_V \mdv{\rho \symbf{q}}{t} \odif{V}         & = \iiint_V \left( \rho \symbf{g} -\symbf{\nabla} p + \mu \symbf{\nabla}^2 \symbf{q} + \mu \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right) \right) \odif{V} \\
+    \mdv{\rho}{t} \symbf{q} + \rho \mdv{\symbf{q}}{t} & = \rho \symbf{g} - \symbf{\nabla} p + \mu \symbf{\nabla}^2 \symbf{q} + \mu \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right)                                 \\
+\end{align*}
+We can simplify this relationship further by assuming that the density
+of the fluid is constant so that \(\mdv{\rho}{t} = 0\). Therefore, given
+the following constitutive relationship for an incompressible fluid:
+\begin{equation*}
+    \symbf{\nabla} \cdot \symbf{q} = 0,
+\end{equation*}
+we find the governing equations for the flow of an incompressible
+Newtonian fluid to be:
+\begin{equation*}
+    \rho \mdv{\symbf{q}}{t} = \rho \symbf{g} - \symbf{\nabla} p + \mu \symbf{\nabla}^2 \symbf{q}.
+\end{equation*}
+This result is known as the \textit{Navier-Stokes equations} for an
+incompressible fluid
 \end{document}
