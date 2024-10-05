@@ -4,6 +4,7 @@
 \input{LaTeX-Submodule/template.tex}
 
 % Additional packages & macros
+\usepackage{mdframed}
 \theoremstyle{definition}
 \newtheorem{example}{Example}[section]
 
@@ -25,6 +26,13 @@
   imagewidth={5em},
   hyphenation={raggedright}
 ]{doclicense}
+
+\newenvironment{aside}[1][]
+  {\begin{mdframed}[style=0,%
+      leftline=false,rightline=false,leftmargin=2em,rightmargin=2em,%
+          innerleftmargin=0pt,innerrightmargin=0pt,linewidth=0.75pt,%
+      skipabove=7pt,skipbelow=7pt,#1]\small}
+  {\end{mdframed}}
 
 \date{}
 
@@ -645,12 +653,14 @@ this initial value to find the constant of integration.
 If we wish for a shock to be resolved without a jump discontinuity, we
 can introduce higher-order terms into the PDE that will smooth out the
 solution.
-\part{Viscous Flow}
-In the following sections, we will discuss the viscous flow of
-incompressible Newtonian fluids. We will begin by deriving the governing
-equations for fluid flow using methods from continuum mechanics. Here we
-treat fluids as continuous media, where fluid properties are described
-by fields that vary continuously in space and time.
+\part{Incompressible Fluid Flow}
+In the following sections, we will discuss the flow of incompressible
+Newtonian fluids. We will begin by deriving the governing equations for
+fluid flow using methods from continuum mechanics. Here we treat fluids
+as continuous media, where fluid properties are described by fields
+that vary continuously in space and time. We will then introduce ideal
+fluid flow, where we assume a fluid is inviscid and incompressible, and
+derive the Euler equations.
 \section{Continuum Mechanics}
 \subsection{Material Derivative}
 Consider the temporal rate of change of a quantity which follows the
@@ -749,8 +759,8 @@ the conservation of mass for a fluid.
 Let us now consider the conservation of momentum for a fluid. Using
 Newton's second law of motion, we can express the rate of change in
 momentum as the sum of the forces acting on the fluid. For a control
-volume \(V\), the rate of change in momentum of a fluid is given by
-the integral:
+volume \(V\), the rate of change in momentum of a fluid is given by the
+integral:
 \begin{equation*}
     \odv*{\iiint_V \rho \symbf{q} \odif{V}}{t} = \symbf{F}.
 \end{equation*}
@@ -828,61 +838,341 @@ strain of the fluid. This can be expressed as:
         \displaystyle \pdv{q_i}{x} + \pdv{u}{x_i} &
         \displaystyle \pdv{q_i}{y} + \pdv{v}{x_i} &
         \displaystyle \pdv{q_i}{z} + \pdv{w}{x_i}
-    \end{bmatrix},
+    \end{bmatrix}
+    ,
 \end{equation*}
 where \(\mu\) is the dynamic viscosity of the fluid and \(q_i\) is the
 \(i\)-th component of the velocity field. This allows us to express the
 total surface force acting on the fluid element in the \(i\)-th
 direction as:
 \begin{align*}
-    \odif{\symbf{F}_{si}} & = \symbf{\nabla} \cdot \left( -p \symbf{e}_i + \symbf{\tau}_i^\top \right) \odif{V}                                                  \\
-                          & = \left( - \pdv{p}{x_i} + \symbf{\nabla} \cdot \symbf{\tau}_i^\top \right) \odif{V}                                                  \\
+    \odif{\symbf{F}_{si}} & = \symbf{\nabla} \cdot \left( -p \symbf{e}_i + \symbf{\tau}_i^\top \right) \odif{V}                                          \\
+                          & = \left( - \pdv{p}{x_i} + \symbf{\nabla} \cdot \symbf{\tau}_i^\top \right) \odif{V}                                          \\
                           & = \left( - \pdv{p}{x_i} + \mu \symbf{\nabla} \cdot
     \begin{bmatrix}
         \displaystyle \pdv{q_i}{x} + \pdv{u}{x_i} \\
         \displaystyle \pdv{q_i}{y} + \pdv{v}{x_i} \\
         \displaystyle \pdv{q_i}{z} + \pdv{w}{x_i}
     \end{bmatrix}
-    \right) \odif{V}                                                                                                                                             \\
+    \right) \odif{V}                                                                                                                                     \\
                           & = \left( - \pdv{p}{x_i} + \mu \left(
         \pdv[order=2]{q_i}{x} + \pdv{u}{x,x_i} +
         \pdv[order=2]{q_i}{y} + \pdv{v}{y,x_i} +
         \pdv[order=2]{q_i}{z} + \pdv{w}{z,x_i}
-    \right) \right) \odif{V}                                                                                                                                     \\
+    \right) \right) \odif{V}                                                                                                                             \\
                           & = \left( - \pdv{p}{x_i} + \mu \left(
         \pdv[order=2]{q_i}{x} + \pdv[order=2]{q_i}{y} + \pdv[order=2]{q_i}{z} +
         \pdv{u}{x,x_i} + \pdv{v}{y,x_i} + \pdv{w}{z,x_i}
-    \right) \right) \odif{V}                                                                                                                                     \\
-                          & = \left( - \pdv{p}{x_i} + \mu \symbf{\nabla}^2 q_i + \mu \symbf{\nabla} \cdot \pdv{\symbf{q}}{x_i} \right) \odif{V}                  \\
-                          & = \left( - \pdv{p}{x_i} + \mu \symbf{\nabla}^2 q_i + \mu \pdv*{\left( \symbf{\nabla} \cdot \symbf{q} \right)}{x_i} \right) \odif{V}.
+    \right) \right) \odif{V}                                                                                                                             \\
+                          & = \left( - \pdv{p}{x_i} + \mu \nabla^2 q_i + \mu \symbf{\nabla} \cdot \pdv{\symbf{q}}{x_i} \right) \odif{V}                  \\
+                          & = \left( - \pdv{p}{x_i} + \mu \nabla^2 q_i + \mu \pdv*{\left( \symbf{\nabla} \cdot \symbf{q} \right)}{x_i} \right) \odif{V}.
 \end{align*}
 By combining all three directions, we can write this using the gradient
 operator:
 \begin{equation*}
-    \odif{\symbf{F}_s} = \left( -\symbf{\nabla} p + \mu \symbf{\nabla}^2 \symbf{q} + \mu \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right) \right) \odif{V}.
+    \odif{\symbf{F}_s} = \left( -\symbf{\nabla} p + \mu \nabla^2 \symbf{q} + \mu \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right) \right) \odif{V}.
 \end{equation*}
 By integrating this over the control volume, we find that the total
 surface force acting on the fluid element is:
 \begin{equation*}
-    \symbf{F}_s = \iiint_V \left( -\symbf{\nabla} p + \mu \symbf{\nabla}^2 \symbf{q} + \mu \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right) \right) \odif{V}.
+    \symbf{F}_s = \iiint_V \left( -\symbf{\nabla} p + \mu \nabla^2 \symbf{q} + \mu \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right) \right) \odif{V}.
 \end{equation*}
 Therefore, the conservation of momentum in a fluid can be expressed as:
 \begin{align*}
-    \odv*{\iiint_V \rho \symbf{q} \odif{V}}{t}        & = \symbf{F}_b + \symbf{F}_s                                                                                                                                             \\
-    \iiint_V \mdv{\rho \symbf{q}}{t} \odif{V}         & = \iiint_V \left( \rho \symbf{g} -\symbf{\nabla} p + \mu \symbf{\nabla}^2 \symbf{q} + \mu \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right) \right) \odif{V} \\
-    \mdv{\rho}{t} \symbf{q} + \rho \mdv{\symbf{q}}{t} & = \rho \symbf{g} - \symbf{\nabla} p + \mu \symbf{\nabla}^2 \symbf{q} + \mu \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right)                                 \\
+    \odv*{\iiint_V \rho \symbf{q} \odif{V}}{t}        & = \symbf{F}_b + \symbf{F}_s                                                                                                                                     \\
+    \iiint_V \mdv{\rho \symbf{q}}{t} \odif{V}         & = \iiint_V \left( \rho \symbf{g} -\symbf{\nabla} p + \mu \nabla^2 \symbf{q} + \mu \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right) \right) \odif{V} \\
+    \mdv{\rho}{t} \symbf{q} + \rho \mdv{\symbf{q}}{t} & = \rho \symbf{g} - \symbf{\nabla} p + \mu \nabla^2 \symbf{q} + \mu \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right)                                 \\
 \end{align*}
-We can simplify this relationship further by assuming that the density
-of the fluid is constant so that \(\mdv{\rho}{t} = 0\). Therefore, given
-the following constitutive relationship for an incompressible fluid:
+We can simplify the continuity equations by assuming that the density
+of the fluid is constant so that \(\displaystyle\mdv{\rho}{t} = 0\).
+Therefore, given the following constitutive relationship for an
+incompressible fluid:
 \begin{equation*}
     \symbf{\nabla} \cdot \symbf{q} = 0,
 \end{equation*}
-we find the governing equations for the flow of an incompressible
-Newtonian fluid to be:
+he governing equations for the flow of an incompressible Newtonian fluid
+are:
 \begin{equation*}
-    \rho \mdv{\symbf{q}}{t} = \rho \symbf{g} - \symbf{\nabla} p + \mu \symbf{\nabla}^2 \symbf{q}.
+    \rho \mdv{\symbf{q}}{t} = \rho \symbf{g} - \symbf{\nabla} p + \mu \nabla^2 \symbf{q}.
 \end{equation*}
-This result is known as the \textit{Navier-Stokes equations} for an
-incompressible fluid
+These results are known as the \textit{Navier-Stokes equations} for an
+incompressible fluid.
+\section{Unidirectional Flow}
+The Navier-Stokes equations are a nonlinear system of four PDEs that
+are extremely difficult to solve both analytically and numerically.
+However, by considering fluid flow in a single direction, we can
+simplify this system greatly. Here we will orient our coordinate system
+with the flow of the fluid, for example, in the \(x\)-direction. This
+simplifies the velocity vector to:
+\begin{equation*}
+    u \neq 0, \quad v = 0, \quad w = 0.
+\end{equation*}
+The continuity equation then also simplifies to:
+\begin{equation*}
+    \symbf{\nabla} \cdot \symbf{q} = \pdv{u}{x} = 0 \implies u = u\left( y,\: z,\: t \right).
+\end{equation*}
+We can also simplify the material derivative to be used in the momentum
+equation:
+\begin{align*}
+    \mdv{\symbf{q}}{t} & = \pdv{\symbf{q}}{t} + \left( \symbf{q} \cdot \symbf{\nabla} \right) \symbf{q} \\
+                       & =
+    \begin{bmatrix}
+        \displaystyle\pdv{u}{t} \\
+        0                       \\
+        0
+    \end{bmatrix}
+    + \left( u \pdv{}{x} \right)
+    \begin{bmatrix}
+        u \\
+        0 \\
+        0
+    \end{bmatrix}
+    \\
+                       & =
+    \begin{bmatrix}
+        \displaystyle\pdv{u}{t} + u \pdv{u}{x} \\
+        0                                      \\
+        0
+    \end{bmatrix}
+    \\
+                       & =
+    \begin{bmatrix}
+        \displaystyle\pdv{u}{t} \\
+        0                       \\
+        0
+    \end{bmatrix}
+    .
+\end{align*}
+We can now consider each component of the Navier-Stokes equations using
+these simplifications. The \(x\)-component of the Navier-Stokes
+equations lets us cancel the derivatives of \(u\) in the \(x\) direction:
+\begin{align*}
+    \rho \pdv{u}{t} & = \rho g_x - \pdv{p}{x} + \mu \left( \pdv[order=2]{u}{x} + \pdv[order=2]{u}{y} + \pdv[order=2]{u}{z} \right) \\
+    \rho \pdv{u}{t} & = \rho g_x - \pdv{p}{x} + \mu \left( \pdv[order=2]{u}{y} + \pdv[order=2]{u}{z} \right).
+\end{align*}
+In the \(y\)-component, we can cancel all derivatives of \(v\), as it is
+zero:
+\begin{align*}
+    0 & = \rho g_y -\pdv{p}{y} + \mu \left( \pdv[order=2]{v}{x} + \pdv[order=2]{v}{y} + \pdv[order=2]{v}{z} \right) \\
+    0 & = \rho g_y -\pdv{p}{y}.
+\end{align*}
+Finally, in the \(z\)-component, we can cancel all derivatives of \(w\),
+as it is also zero:
+\begin{align*}
+    0 & = \rho g_z -\pdv{p}{z} + \mu \left( \pdv[order=2]{w}{x} + \pdv[order=2]{w}{y} + \pdv[order=2]{w}{z} \right) \\
+    0 & = \rho g_z -\pdv{p}{z}.
+\end{align*}
+Therefore, the governing equations for unidirectional flow in the
+\(x\)-direction is given by the following system of coupled PDEs:
+\begin{equation*}
+    \begin{cases}
+        \displaystyle \rho \pdv{u}{t} = \rho g_x - \pdv{p}{x} + \mu \left( \pdv[order=2]{u}{y} + \pdv[order=2]{u}{z} \right) \\
+        \displaystyle 0 = \rho g_y -\pdv{p}{y}                                                                               \\
+        \displaystyle 0 = \rho g_z -\pdv{p}{z}
+    \end{cases}
+\end{equation*}
+Depending on the problem, we can further simplify these equations if:
+\begin{itemize}
+    \item the body force acts in one direction, or if it is negligible.
+    \item the flow is steady, so that all time derivatives are zero.
+    \item the flow is in 2D, so that there is no variation in the
+          \(z\)-direction.
+    \item there is no pressure gradient driving the flow, so that
+          \(\displaystyle\pdv{p}{x} = 0\).
+\end{itemize}
+After simplifying these equations, we can often solve this system of
+PDEs through the method of separation of variables.
+\subsection{Boundary Conditions}
+A common boundary condition for fluid flow is the no-slip condition,
+which states that the velocity of the fluid at the boundary of a solid
+object is equal to the velocity of the object. This can be expressed as:
+\begin{equation*}
+    u = U \quad \text{at } y = 0
+\end{equation*}
+where \(U\) is the velocity of the object. When the object is stationary,
+this condition reduces to:
+\begin{equation*}
+    u = 0 \quad \text{at } y = 0.
+\end{equation*}
+\section{Dimensionless Form}
+Consider a non-dimensional form of the Navier-Stokes equations, where
+all variables are scaled by their dimensional counterparts. Here we
+will introduce the following dimensionless variables:
+\begin{equation*}
+    \hat{\symbf{x}} = \frac{1}{\mathsf{L}} \symbf{x}, \quad \hat{t} = \frac{1}{\mathsf{T}} t, \quad \hat{\symbf{q}} = \frac{1}{\mathsf{Q}} \symbf{q}, \quad \hat{\symbf{p}} = \frac{1}{\mathsf{P}} \symbf{p},
+\end{equation*}
+where \(\mathsf{L}\), \(\mathsf{T}\), \(\mathsf{Q}\), and \(\mathsf{P}\)
+are characteristic length, time, velocity, and pressure scales,
+respectively. By substituting these into the Navier-Stokes equations,
+we can find the dimensionless form of the governing equations of
+incompressible fluid flow:
+\begin{equation*}
+    \rho \left( \frac{\mathsf{Q}}{\mathsf{T}} \pdv{\hat{\symbf{q}}}{t} + \frac{\mathsf{Q^2}}{\mathsf{L}} \left( \hat{\symbf{q}} \cdot \hat{\symbf{\nabla}} \right) \hat{\symbf{q}} \right) = \rho \symbf{g} - \frac{\mathsf{P}}{\mathsf{L}} \hat{\symbf{\nabla}} \hat{p} + \frac{\mu \mathsf{Q}}{\mathsf{L}^2} \hat{\nabla}^2 \hat{\symbf{q}}
+\end{equation*}
+Let us then define the velocity scale as the ratio of the characteristic
+length to the characteristic time:
+\begin{equation*}
+    \mathsf{Q} = \frac{\mathsf{L}}{\mathsf{T}}.
+\end{equation*}
+This lets us factor the dimensions on the material derivative:
+\begin{equation*}
+    \frac{\rho \mathsf{Q}^2}{\mathsf{L}} \left( \pdv{\hat{\symbf{q}}}{t} + \left( \hat{\symbf{q}} \cdot \hat{\symbf{\nabla}} \right) \hat{\symbf{q}} \right) = \rho g \hat{\symbf{g}} - \frac{\mathsf{P}}{\mathsf{L}} \hat{\symbf{\nabla}} \hat{p} + \frac{\mu \mathsf{Q}}{\mathsf{L}^2} \hat{\nabla}^2 \hat{\symbf{q}},
+\end{equation*}
+where \(g\) is the magnitude of \(\symbf{g}\).
+The magnitudes of the terms in the Navier-Stokes equations can be
+compared by considering the order of magnitude of each term:
+\begin{itemize}
+    \item \textbf{Inertial Force}: \(\mathcal{O}\left( \frac{\rho \mathsf{Q}^2}{\mathsf{L}} \right)\)
+          from \(
+          \pdv{\hat{\symbf{q}}}/{t} + \left( \hat{\symbf{q}} \cdot \hat{\symbf{\nabla}} \right) \hat{\symbf{q}}
+          \).
+    \item \textbf{Gravity Force}: \(\mathcal{O}\left( \rho g \right)\)
+          from \(
+          \hat{\symbf{g}}
+          \).
+    \item \textbf{Pressure Gradient Force}: \(\mathcal{O}\left( \frac{\mathsf{P}}{\mathsf{L}} \right)\)
+          from \(
+          \hat{\symbf{\nabla}} \hat{p}
+          \).
+    \item \textbf{Viscous Force}: \(\mathcal{O}\left( \frac{\mu \mathsf{Q}}{\mathsf{L}^2} \right)\)
+          from \(
+          \hat{\nabla}^2 \hat{\symbf{q}}
+          \).
+\end{itemize}
+\subsection{Reynolds and Froude Numbers}
+If we consider the ratio of the inertial force to the viscous force, we
+derive the \textit{Reynolds number}:
+\begin{equation*}
+    \mathrm{Re} = \frac{\rho \mathsf{Q} \mathsf{L}}{\mu} = \frac{\text{Inertial Force}}{\text{Viscous Force}}.
+\end{equation*}
+This number is a measure of the relative importance of inertial forces
+to viscous forces in a fluid flow.
+\begin{itemize}
+    \item For \(\mathrm{Re} \ll 1\), the flow is dominated by viscous
+          forces, chracterised by low velocity or high viscosity. This
+          regmine is known as \textbf{viscous flow} or \textbf{Stokes
+          flow}.
+    \item For \(\mathrm{Re} \gg 1\), the flow is dominated by inertial
+          forces, characterised by high velocity or low viscosity. This
+          is referred to as \textbf{inviscid flow} or \textbf{ideal
+          flow}.
+\end{itemize}
+We can also consider the ratio of the inertial force to the body force
+to derive the \textit{Froude number} when considering the effects of
+gravity:
+\begin{equation*}
+    \mathrm{Fr} = \frac{\mathsf{Q}}{\sqrt{g \mathsf{L}}} = \sqrt{\frac{\text{Inertial Force}}{\text{Gravity Force}}}.
+\end{equation*}
+This number is a measure of the relative importance of inertial forces
+to gravitational forces in a fluid flow.
+\begin{itemize}
+    \item For \(\mathrm{Fr} < 1\), the flow is dominated by
+          gravitational forces and disturbances propogate upstream.
+          This is known as \textbf{subcritical flow}.
+    \item For \(\mathrm{Fr} > 1\), the flow is dominated by inertial
+          forces and disturbances propogate downstream. This is known
+          as \textbf{supercritical flow}.
+    \item For \(\mathrm{Fr} = 1\), the flow is in a state of
+          \textbf{critical flow} where the flow velocity matches the
+          wave speed.
+\end{itemize}
+We can express the Navier-Stokes equations in dimensionless form using
+these dimensionless variables:
+\begin{equation*}
+    \mdv{\hat{\symbf{q}}}{t} = \frac{1}{\mathrm{Fr}^2} \hat{\symbf{g}} - \frac{\mathsf{P}}{\rho \mathsf{Q}^2} \hat{\symbf{\nabla}} \hat{p} + \frac{1}{\mathrm{Re}} \hat{\nabla}^2 \hat{\symbf{q}},
+\end{equation*}
+with the constitutive relationship:
+\begin{equation*}
+    \hat{\symbf{\nabla}} \cdot \hat{\symbf{q}} = 0,
+\end{equation*}
+for incompressible flow.
+\section{Inviscid Flow}
+If we suppose that flow is inviscid, \(\mathrm{Re} \gg 1\), and we can
+simplify the Navier-Stokes by removing the viscous term:
+\begin{equation*}
+    \mdv{\hat{\symbf{q}}}{t} = \frac{1}{\mathrm{Fr}^2} \hat{\symbf{g}} - \frac{\mathsf{P}}{\rho \mathsf{Q}^2} \hat{\symbf{\nabla}} \hat{p}.
+\end{equation*}
+Notice all terms are dimensionless and suggests that the pressure scale
+is proportional to the square of the velocity scale:
+\begin{equation*}
+    \mathsf{P} = \rho \mathsf{Q}^2.
+\end{equation*}
+This allows us to simplify the governing equations to\footnote{Note we have
+    dropped the hats on the variables for brevity.}:
+\begin{equation*}
+    \mdv{\symbf{q}}{t} = \frac{1}{\mathrm{Fr}^2} \symbf{g} - \symbf{\nabla} p,
+\end{equation*}
+with the constitutive relationship:
+\begin{equation*}
+    \symbf{\nabla} \cdot \symbf{q} = 0.
+\end{equation*}
+This system of equations is known as the \textit{Euler equations} and
+describes the flow of an inviscid fluid.
+\subsection{Irrotational Flow}
+Consider a flow whose vorticity (tendancy to rotate) is zero. This type
+of flow is known as \textit{irrotational flow} or \textit{potential
+flow}, where we assume the velocity field is conservative:
+\begin{equation*}
+    \symbf{q} = \symbf{\nabla} \phi.
+\end{equation*}
+Here \(\phi = \phi\left( x,\: y,\: z,\: t \right)\) is a velocity
+potential with continuous second derivatives. When flow is both
+inviscid and irrotational, it is called \textit{ideal flow}. Using this
+restriction, we can further simplify the Euler equations by reducing the
+material derivative as follows:
+\begin{align*}
+    \mdv{\symbf{q}}{t} & = \pdv{\symbf{q}}{t} + \left( \symbf{q} \cdot \symbf{\nabla} \right) \symbf{q}                                                                               \\
+                       & = \pdv{\symbf{q}}{t} + \frac{1}{2} \symbf{\nabla} \left( \symbf{q} \cdot \symbf{q} \right) - \symbf{q} \times \left( \symbf{\nabla} \times \symbf{q} \right) \\
+                       & = \pdv{\symbf{q}}{t} + \frac{1}{2} \symbf{\nabla} \norm*{\symbf{q}}^2                                                                                        \\
+                       & = \pdv{\symbf{\nabla} \phi}{t} + \frac{1}{2} \symbf{\nabla} \norm*{\symbf{\nabla} \phi}^2                                                                    \\
+                       & = \symbf{\nabla} \left( \pdv{\phi}{t} + \frac{1}{2} \norm*{\symbf{\nabla} \phi}^2 \right).
+\end{align*}
+Then, if we assume the body forces only consist of gravitational forces
+that act in the \(z\)-direction, we can express this force as:
+\begin{equation*}
+    \symbf{g} = -\symbf{k} = -\symbf{\nabla} \left( z \right).
+\end{equation*}
+So, the Euler equations for inviscid, irrotational flow are:
+\begin{align*}
+    \symbf{\nabla} \left( \pdv{\phi}{t} + \frac{1}{2} \norm*{\symbf{\nabla} \phi}^2 \right)                                 & = -\symbf{\nabla} p - \frac{1}{\mathrm{Fr}^2} \symbf{\nabla} \left( z \right) \\
+    \symbf{\nabla} \left( \pdv{\phi}{t} + \frac{1}{2} \norm*{\symbf{\nabla} \phi}^2 \right)                                 & = -\symbf{\nabla} \left( p + \frac{1}{\mathrm{Fr}^2} z \right)                \\
+    \symbf{\nabla} \left( \pdv{\phi}{t} + \frac{1}{2} \norm*{\symbf{\nabla} \phi}^2 + p + \frac{1}{\mathrm{Fr}^2} z \right) & = 0                                                                           \\
+    \pdv{\phi}{t} + \frac{1}{2} \norm*{\symbf{\nabla} \phi}^2 + p + \frac{1}{\mathrm{Fr}^2} z                               & = c\left( t \right).
+\end{align*}
+Note that if we choose
+\(\phi = \bar{\phi} + \int c\left( t \right) \odif{t}\), then:
+\begin{align*}
+    \pdv{\bar{\phi}}{t} + c\left( t \right) + \frac{1}{2} \norm*{\symbf{\nabla} \bar{\phi}}^2 + p + \frac{1}{\mathrm{Fr}^2} z & = c\left( t \right) \\
+    \pdv{\bar{\phi}}{t} + \frac{1}{2} \norm*{\symbf{\nabla} \bar{\phi}}^2 + p + \frac{1}{\mathrm{Fr}^2} z                     & = 0.
+\end{align*}
+Therefore, as \(c\left( t \right)\) plays no role in this equation
+we can choose \(c\left( t \right) = 0\). Therefore, for inviscid,
+irrotational flow, the governing equation is given by:
+\begin{equation*}
+    \pdv{\phi}{t} + \frac{1}{2} \norm*{\symbf{\nabla} \phi}^2 + p + \frac{1}{\mathrm{Fr}^2} z = 0.
+\end{equation*}
+This result is known as \textbf{Bernoulli's equation}. Additionally,
+the continuity equation becomes:
+\begin{equation*}
+    \symbf{\nabla} \cdot \symbf{q} = \symbf{\nabla} \cdot \symbf{\nabla} \phi = \nabla^2 \phi = 0.
+\end{equation*}
+This is precisely Laplace's equation, a linear second-order elliptic
+PDE that can be solved using separation of variables. Thus, by solving
+this equation, we can find the velocity potential \(\phi\) which satisfies
+Bernoulli's equation.
+\subsection{Boundary Conditions}
+For inviscid, irrotational flow, we can no longer use the no-slip
+condition as the flow is inviscid, so the fluid can slip past the
+boundary. Instead, we enforce the condition that the normal velocity to
+the boundary is zero:
+\begin{equation*}
+    \symbf{q} \cdot \symbf{n} = 0 \implies \symbf{\nabla} \phi \cdot \symbf{n} = 0,
+\end{equation*}
+for a solid boundary with normal vector \(\symbf{n}\). This ensures that
+flow does not penetrate the boundary. For a solid boundary that is
+moving with velocity \(\symbf{U}\), this condition
+becomes:
+\begin{equation*}
+    \left( \symbf{q} - \symbf{U} \right) \cdot \symbf{n} = 0.
+\end{equation*}
 \end{document}
