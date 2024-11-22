@@ -7,6 +7,7 @@
 \usepackage{mdframed}
 \theoremstyle{definition}
 \newtheorem{example}{Example}[section]
+\DeclareMathOperator{\Log}{Log}
 
 % Header and footer
 \newcommand{\unitName}{Differential Equations and Modelling 2}
@@ -76,7 +77,7 @@ must ensure that the function \(U\left( x,\: t,\: u\left( X,\: T
 the PDE is said to have a \textit{symmetry transformation}.
 
 The goal of these symmetry methods is to find an appropriate
-transformation that simplies the PDE, often reducing it to an ODE.
+transformation that simplifies the PDE, often reducing it to an ODE.
 \subsection{Dilation Symmetry}
 A dilation symmetry is a transformation of the form
 \begin{equation*}
@@ -768,8 +769,8 @@ Here, \(\symbf{F}\) is the total force acting on the fluid, per unit
 volume. In a fluid, we can decompose this force into the sum of
 \textbf{body forces} \(\symbf{F}_b\), and \textbf{surface forces}
 \(\symbf{F}_s\), that act on some differential fluid element \(\odif{V}\).
-Body forces are uniformally distributed through an element and can
-include gravitational forces, electromagnetic forces, coriolis forces,
+Body forces are uniformly distributed through an element and can
+include gravitational forces, electromagnetic forces, Coriolis forces,
 etc. Here we will denote this generally as:
 \begin{equation*}
     \odif{\symbf{F}_b} = \rho \symbf{g} \odif{V} \implies \symbf{F}_b = \iiint_V \rho \symbf{g} \odif{V},
@@ -985,7 +986,8 @@ PDEs through the method of separation of variables.
 \subsection{Boundary Conditions}
 A common boundary condition for fluid flow is the no-slip condition,
 which states that the velocity of the fluid at the boundary of a solid
-object is equal to the velocity of the object. This can be expressed as:
+object is equal to the velocity of the object. This can be expressed
+as:
 \begin{equation*}
     u = U \quad \text{at } y = 0
 \end{equation*}
@@ -1049,8 +1051,8 @@ This number is a measure of the relative importance of inertial forces
 to viscous forces in a fluid flow.
 \begin{itemize}
     \item For \(\mathrm{Re} \ll 1\), the flow is dominated by viscous
-          forces, chracterised by low velocity or high viscosity. This
-          regmine is known as \textbf{viscous flow} or \textbf{Stokes
+          forces, characterised by low velocity or high viscosity. This
+          regime is known as \textbf{viscous flow} or \textbf{Stokes
           flow}.
     \item For \(\mathrm{Re} \gg 1\), the flow is dominated by inertial
           forces, characterised by high velocity or low viscosity. This
@@ -1070,7 +1072,7 @@ to gravitational forces in a fluid flow.
           gravitational forces and disturbances propogate upstream.
           This is known as \textbf{subcritical flow}.
     \item For \(\mathrm{Fr} > 1\), the flow is dominated by inertial
-          forces and disturbances propogate downstream. This is known
+          forces and disturbances propagate downstream. This is known
           as \textbf{supercritical flow}.
     \item For \(\mathrm{Fr} = 1\), the flow is in a state of
           \textbf{critical flow} where the flow velocity matches the
@@ -1079,7 +1081,7 @@ to gravitational forces in a fluid flow.
 We can express the Navier-Stokes equations in dimensionless form using
 these dimensionless variables:
 \begin{equation*}
-    \mdv{\hat{\symbf{q}}}{t} = \frac{1}{\mathrm{Fr}^2} \hat{\symbf{g}} - \frac{\mathsf{P}}{\rho \mathsf{Q}^2} \hat{\symbf{\nabla}} \hat{p} + \frac{1}{\mathrm{Re}} \hat{\nabla}^2 \hat{\symbf{q}},
+    \mathrm{Re} \mdv{\hat{\symbf{q}}}{t} = \frac{\mathrm{Re}}{\mathrm{Fr}^2} \hat{\symbf{g}} - \frac{\mathsf{P} \mathsf{L}}{\mathsf{Q} \mu} \hat{\symbf{\nabla}} \hat{p} + \hat{\nabla}^2 \hat{\symbf{q}} \iff \mdv{\hat{\symbf{q}}}{t} = \frac{1}{\mathrm{Fr}^2} \hat{\symbf{g}} - \frac{\mathsf{P}}{\rho \mathsf{Q}^2} \hat{\symbf{\nabla}} \hat{p} + \frac{1}{\mathrm{Re}} \hat{\nabla}^2 \hat{\symbf{q}},
 \end{equation*}
 with the constitutive relationship:
 \begin{equation*}
@@ -1109,7 +1111,7 @@ with the constitutive relationship:
 This system of equations is known as the \textit{Euler equations} and
 describes the flow of an inviscid fluid.
 \subsection{Irrotational Flow}
-Consider a flow whose vorticity (tendancy to rotate) is zero. This type
+Consider a flow whose vorticity (tendency to rotate) is zero. This type
 of flow is known as \textit{irrotational flow} or \textit{potential
 flow}, where we assume the velocity field is conservative:
 \begin{equation*}
@@ -1173,6 +1175,402 @@ flow does not penetrate the boundary. For a solid boundary that is
 moving with velocity \(\symbf{U}\), this condition
 becomes:
 \begin{equation*}
-    \left( \symbf{q} - \symbf{U} \right) \cdot \symbf{n} = 0.
+    \left( \symbf{q} - \symbf{U} \right) \cdot \symbf{n} = 0 \implies \symbf{\nabla} \phi \cdot \symbf{n} = \symbf{U} \cdot \symbf{n}.
 \end{equation*}
+\subsection{Complex Potentials}
+In this section, let us consider complex functions of the form
+\begin{equation*}
+    f\left( z \right) = \phi\left( x,\: y \right) + i \psi\left( x,\: y \right), \quad z = x + iy.
+\end{equation*}
+Here, we will suppose that the real part of this function, \(\phi\), is
+the velocity potential discussed earlier, and the imaginary part,
+\(\psi\), is a new function which we will call a \textit{stream
+    function}. A key result from complex analysis states that
+an analytic (infinitely differentiable) function satisfies the
+Cauchy-Riemann equations:
+\begin{equation*}
+    \pdv{\phi}{x} = \pdv{\psi}{y}, \quad \pdv{\phi}{y} = -\pdv{\psi}{x}.
+\end{equation*}
+This allows us to relate the velocity field to the stream function in
+Cartesian coordinates as:
+\begin{equation*}
+    q_x = \pdv{\phi}{x} = \pdv{\psi}{y}, \quad q_y = \pdv{\phi}{y} = -\pdv{\psi}{x}.
+\end{equation*}
+If we assume both \(\phi\) and \(\psi\) are sufficiently smooth, and
+take the derivatives of each expression w.r.t., \(x\) and \(y\), we find:
+\begin{align*}
+    \pdv*{\left( \pdv{\phi}{x} \right)}{x} = \pdv*{\left( \pdv{\psi}{y} \right)}{x}  & \implies \pdv[order=2]{\phi}{x} = \pdv{\psi}{xy},  \\
+    \pdv*{\left( \pdv{\phi}{y} \right)}{y} = \pdv*{\left( -\pdv{\psi}{x} \right)}{y} & \implies \pdv[order=2]{\phi}{y} = -\pdv{\psi}{yx}.
+\end{align*}
+By Schwarz's theorem, we can also interchange the order of
+differentiation of the mixed partial derivatives in these equations,
+giving us the following equalities:
+\begin{equation*}
+    \pdv[order=2]{\phi}{x} = - \pdv[order=2]{\phi}{y} \implies \pdv[order=2]{\phi}{x} + \pdv[order=2]{\phi}{y} = 0 \implies \nabla^2 \phi = 0.
+\end{equation*}
+Using a similar argument, we can also show that \(\nabla^2 \psi = 0\).
+Thus, both the velocity potential and the stream function satisfy
+Laplace's equation, and furthermore, also satisfy Bernoulli's equation.
+Therefore, we can refer to the complex function \(f\left( z \right)\)
+as a \textit{complex potential} for the flow.
+
+To summarise, the complex potential for inviscid, irrotational flow
+encapsulates the velocity and direction of a flow. Here, the velocity
+potential \(\phi\) represents the potential energy of the flow, and the
+stream function \(\psi\) offers a geometric visualisation of the flow's
+direction. We can plot the \textit{streamlines} of the flow, that is,
+the paths that fluid particles follow, by plotting the level curves of
+\(\psi\) where \(\psi\) is constant.
+\subsubsection{Uniform Streams}
+The simplest example of a complex potential arises from a steady
+uniform stream in the \(x\)-direction with constant velocity \(U\). The
+velocity for this flow is given by:
+\begin{equation*}
+    u = U, \quad v = 0.
+\end{equation*}
+Using the above relationships between the velocity field, velocity
+potential, and stream function, we can construct the following complex
+potential function for this flow:
+\begin{equation*}
+    f\left( z \right) = Uz = Ux + i Uy \implies \phi = Ux, \quad \psi = Uy.
+\end{equation*}
+\subsubsection{Dipoles}
+If this flow is obstructed by a solid disk with radius \(a\), we can
+solve for this complex potential using polar coordinates. Due to the
+additional complexity of this boundary condition, we will need to first
+find the velocity potential \(\phi\) to find the velocity field and
+stream function. We can do this by solving Laplace's equation for the
+velocity potential with a solid boundary condition, assuming that in
+the far-field, the flow is uniform.
+\begin{gather*}
+    \nabla^2 \phi = 0, \\
+    \nabla \phi \cdot \symbf{n} = 0 \text{ on } r = a, \\
+    \quad \phi \sim U r \cos{\left( \theta \right)} \text{ as } r \to \infty.
+\end{gather*}
+We will use separation of variables to solve this problem, by assuming
+that \(\phi\left( r,\: \theta \right) = R\left( r \right) \cos{\left( \theta \right)}\).
+\begin{align*}
+    \frac{1}{r} \pdv*{\left( r \pdv{\phi}{r} \right)}{r} + \frac{1}{r^2} \pdv[order=2]{\phi}{\theta}                    & = 0, \\
+    r \pdv*{\left( r R' \cos{\left( \theta \right)} \right)}{r} - R \cos{\left( \theta \right)}                         & = 0, \\
+    r \left( R' \cos{\left( \theta \right)} + r R'' \cos{\left( \theta \right)} \right) - R \cos{\left( \theta \right)} & = 0, \\
+    \left( r^2 R'' + r R' - R \right) \cos{\left( \theta \right)}                                                       & = 0.
+\end{align*}
+This is an Euler-Cauchy equation, which can be solved by assuming a
+solution of the form \(R\left( r \right) = r^n\):
+\begin{align*}
+    n \left( n - 1 \right) r^n + n r^n - r^n & = 0,     \\
+    n^2 - 1                                  & = 0      \\
+    n                                        & = \pm 1.
+\end{align*}
+Therefore, the general solution to this equation is:
+\begin{equation*}
+    \phi\left( r,\: \theta \right) = A r \cos{\left( \theta \right)} + B r^{-1} \cos{\left( \theta \right)}.
+\end{equation*}
+If we apply the first boundary condition, we find,
+\begin{align*}
+    \nabla \phi \cdot \symbf{n}                                                                                                   & = 0         \\
+    \left( \pdv{\phi}{r} \symbf{e}_r + \frac{1}{r} \pdv{\phi}{\theta} \symbf{e}_{\theta} \right) \cdot \left( \symbf{e}_r \right) & = 0         \\
+    \pdv{\phi}{r}                                                                                                                 & = 0         \\
+    A \cos{\left( \theta \right)} - B r^{-2} \cos{\left( \theta \right)}                                                          & = 0         \\
+    A - B a^{-2}                                                                                                                  & = 0         \\
+    A                                                                                                                             & = B a^{-2},
+\end{align*}
+so that,
+\begin{equation*}
+    \phi\left( r,\: \theta \right) = B a^{-2} r \cos{\left( \theta \right)} + B r^{-1} \cos{\left( \theta \right)}.
+\end{equation*}
+The far-field condition implies that the following limit must hold:
+\begin{align*}
+    \lim_{r \to \infty} \frac{\phi}{U r \cos{\left( \theta \right)}}                                                                          & = 1      \\
+    \lim_{r \to \infty} \frac{B a^{-2} r \cos{\left( \theta \right)} + B r^{-1} \cos{\left( \theta \right)}}{U r \cos{\left( \theta \right)}} & = 1      \\
+    \lim_{r \to \infty} \frac{B a^{-2} \cos{\left( \theta \right)} + B r^{-2} \cos{\left( \theta \right)}}{U \cos{\left( \theta \right)}}     & = 1      \\
+    \frac{B a^{-2} \cos{\left( \theta \right)}}{U \cos{\left( \theta \right)}}                                                                & = 1      \\
+    B                                                                                                                                         & = U a^2.
+\end{align*}
+Therefore, the velocity potential for this flow is given by:
+\begin{equation*}
+    \phi\left( r,\: \theta \right) = U r \cos{\left( \theta \right)} + U a^2 r^{-1} \cos{\left( \theta \right)}.
+\end{equation*}
+This solution has a dividing streamline on \(x = 0\), where the flow
+above the \(x\)-axis is directed upwards above the disk, and the flow
+below the \(x\)-axis is directed downwards below the disk. The
+streamline at \(\psi = 0\), intersects the disk at two points
+\(\left( 0,\: \pm a \right)\) known as \textit{stagnation points}, where
+the velocity is zero.
+Given that Laplace's equation is linear, we can separate this solution
+into the velocity potentials for a uniform stream and a \textit{dipole}.
+This dipole has the following velocity potential:
+\begin{equation*}
+    \phi = U a^2 r^{-1} \cos{\left( \theta \right)}.
+\end{equation*}
+This solution describes a circular flow that grows outwards from the
+left of the origin, and enters the origin from the right. The velocity
+of this flow is given by:
+\begin{align*}
+    q_r        & = \pdv{\phi}{r} = -U a^2 r^{-2} \cos{\left( \theta \right)},                  \\
+    q_{\theta} & = \frac{1}{r} \pdv{\phi}{\theta} = -U a^2 r^{-2} \sin{\left( \theta \right)}.
+\end{align*}
+The stream function for this flow is given by:
+\begin{equation*}
+    \psi = -U a^2 r^{-1} \sin{\left( \theta \right)}.
+\end{equation*}
+Note that as the magnitude of the velocity field approaches infinity as
+\(r \to 0\), there is a singularity at the origin. The complex potential
+for this flow is given by:
+\begin{align*}
+    f\left( z \right) & = \frac{U a^2}{r} \cos{\left( \theta \right)} - i \frac{U a^2}{r} \sin{\left( \theta \right)}    \\
+                      & = \frac{U a^2}{r} \left( \cos{\left( \theta \right)} - i \sin{\left( \theta \right)} \right)     \\
+                      & = \frac{U a^2}{r^2} r \left( \cos{\left( \theta \right)} - i \sin{\left( \theta \right)} \right) \\
+                      & = \frac{U a^2}{z \bar{z}} \bar{z}                                                                \\
+                      & = \frac{U a^2}{z}.
+\end{align*}
+\subsubsection{Vortices}
+The flow described above does not generate any lift on the solid disk,
+as there is no circulation in the flow. This can also be deduced by the
+fact that the streamlines are symmetric about the \(x\)-axis. If we
+were to consider a solution to Laplace's equation that depends on the
+angular coordinate, \(\phi = \phi\left( \theta \right)\), we can
+construct a potential that generates a vortex. One such solution is
+given by:
+\begin{equation*}
+    \phi = \frac{\Gamma}{2\pi} \theta
+\end{equation*}
+where we will claim that \(\Gamma\) is the circulation of the flow. The
+velocity field and stream function for this potential are given by:
+\begin{equation*}
+    q_r = 0, \quad q_{\theta} = \frac{\Gamma}{2\pi r}, \quad \psi = -\frac{\Gamma}{2\pi} \ln{\left( r \right)}.
+\end{equation*}
+When combined with the potential from the previous section, this flow
+generates a lift on the circular object, with a stagnation point at the
+top of the disk (when \(\Gamma > 0\)). If we compute the circulation of
+this flow around the circle, we find that \(\Gamma\) is indeed the
+circulation of the flow:
+\begin{align*}
+    \oint_{\mathscr{C}} \symbf{q} \cdot \odif{\symbf{r}} & = \int_{0}^{2\pi} \left( \frac{\Gamma}{2\pi r} \symbf{e}_{\theta} \right) \cdot \left( \symbf{e}_{\theta} - \symbf{e}_r \right) r \odif{\theta} \\
+                                                         & = \int_{0}^{2\pi} \frac{\Gamma}{2\pi} \odif{\theta}                                                                                             \\
+                                                         & = \Gamma.
+\end{align*}
+The complex potential for this flow is given by:
+\begin{align*}
+    f\left( z \right) & = \frac{\Gamma}{2\pi} \theta - i \frac{\Gamma}{2\pi} \ln{\left( r \right)}         \\
+                      & = \frac{\Gamma}{2\pi} \left( \theta - i \ln{\left( r \right)} \right)              \\
+                      & = -i \frac{\Gamma}{2\pi} \left( \ln{\left( r \right)} - \frac{1}{i} \theta \right) \\
+                      & = \frac{\Gamma}{2\pi i} \left( \ln{\left( r \right)} + i \theta \right)            \\
+                      & = \frac{\Gamma}{2\pi i} \Log{\left( z \right)},
+\end{align*}
+where \(\Log\) is the principal branch of the complex logarithm.
+\subsubsection{Line Sources and Sinks}
+Consider a 2D source at the origin that emits fluid radially outwards
+through a circle a constant rate. Here we will assume that the
+potential function is only dependent on the radial coordinate, \(\phi =
+\phi\left( r \right)\). Upon solving Laplace's equation for this
+potential, we can construct a solution of the form:
+\begin{equation*}
+    \phi = \frac{\Phi}{2\pi} \ln{\left( r \right)},
+\end{equation*}
+where we will claim that \(\Phi\) is the strength of the source. The
+velocity field and stream function for this potential are given by:
+\begin{equation*}
+    q_r = \frac{\Phi}{2\pi r}, \quad q_{\theta} = 0, \quad \psi = \frac{\Phi}{2\pi} \theta.
+\end{equation*}
+This flow is generated by a source at the origin, where the fluid has a
+greater velocity near the source. If we compute the flux of this flow
+across a circle of radius \(r\), we find that the flux is precisely
+equal to the strength of the source:
+\begin{align*}
+    \iint_{\mathscr{S}} \symbf{q} \cdot \odif{\symbf{\sigma}} & = \iint_{\mathscr{S}} \symbf{q} \cdot \symbf{n} \odif{\sigma}                                                     \\
+                                                              & = \int_0^{2\pi} \left( \frac{\Phi}{2\pi r} \symbf{e}_{r} \right) \cdot \left( r \symbf{e}_r \right) \odif{\theta} \\
+                                                              & = \int_0^{2\pi} \frac{\Phi}{2\pi} \odif{\theta}                                                                   \\
+                                                              & = \Phi.
+\end{align*}
+The complex potential for this flow is given by:
+\begin{align*}
+    f\left( z \right) & = \frac{\Phi}{2\pi} \ln{\left( r \right)} + i \frac{\Phi}{2\pi} \theta \\
+                      & = \frac{\Phi}{2\pi} \left( \ln{\left( r \right)} + i \theta \right)    \\
+                      & = \frac{\Phi}{2\pi} \Log{\left( z \right)}.
+\end{align*}
+When the source is replaced by a sink, the potential function becomes:
+\begin{equation*}
+    \phi = -\frac{\Phi}{2\pi} \ln{\left( r \right)},
+\end{equation*}
+where the velocity field and stream function are given by:
+\begin{equation*}
+    q_r = -\frac{\Phi}{2\pi r}, \quad q_{\theta} = 0, \quad \psi = -\frac{\Phi}{2\pi} \theta.
+\end{equation*}
+The complex potential for this flow is given by:
+\begin{equation*}
+    f\left( z \right) = -\frac{\Phi}{2\pi} \Log{\left( z \right)}.
+\end{equation*}
+\subsubsection{Point Sources and Sinks}
+We can extend the above solutions to the case of a 3D source at the
+origin that emits fluid radially outwards through a sphere at a
+constant rate. We will make the same assumptions as before, but instead
+use spherical coordinates to solve Laplace's equation. The potential
+function for this flow is given by:
+\begin{equation*}
+    \phi = \frac{\Phi}{4\pi r},
+\end{equation*}
+where we will claim that \(\Phi\) is the strength of the source. The
+velocity field for this potential is given by:
+\begin{equation*}
+    q_r = \frac{\Phi}{4\pi r^2}, \quad q_{\theta} = 0, \quad q_{\phi} = 0.
+\end{equation*}
+Note that it is not possible to construct a stream function and
+therefore also a complex potential for this flow as there are more
+than two degrees of freedom in the flow. The flux of this flow across a
+sphere of radius \(r\) is given by:
+\begin{align*}
+    \iint_{\mathscr{S}} \symbf{q} \cdot \odif{\symbf{\sigma}} & = \iint_{\mathscr{S}} \symbf{q} \cdot \symbf{n} \odif{\sigma}                                                                                                                \\
+                                                              & = \int_0^{2\pi} \int_0^{\pi} \left( \frac{\Phi}{4\pi r^2} \symbf{e}_{r} \right) \cdot \left( \symbf{e}_{r} \right) r^2 \sin{\left( \theta \right)} \odif{\theta} \odif{\phi} \\
+                                                              & = \int_0^{2\pi} \int_0^{\pi} \frac{\Phi}{4\pi} \sin{\left( \theta \right)} \odif{\theta} \odif{\phi}                                                                         \\
+                                                              & = \Phi.
+\end{align*}
+When the source is replaced by a sink, the potential function becomes:
+\begin{equation*}
+    \phi = -\frac{\Phi}{4\pi r},
+\end{equation*}
+where the velocity field for this potential is given by:
+\begin{equation*}
+    q_r = -\frac{\Phi}{4\pi r^2}, \quad q_{\theta} = 0, \quad q_{\phi} = 0.
+\end{equation*}
+\subsubsection{Flow Around a Corner}
+Another interesting flow arises from the complex polynomial
+\begin{align*}
+    f\left( z \right) & = z^2                      \\
+                      & = \left( x + i y \right)^2 \\
+                      & = x^2 + 2 i x y - y^2      \\
+                      & = x^2 - y^2 + 2 i x y,
+\end{align*}
+where the velocity potential and stream function are given by:
+\begin{equation*}
+    \phi = x^2 - y^2, \quad \psi = 2xy.
+\end{equation*}
+This flow rotates fluid particles in a clockwise direction around the
+origin, from the positive \(x\)-axis. By varying the power of the
+polynomial \(\alpha\), we can describe flows around corners of different
+angles. When \(n = 1/2\), we have flow around a wall that extends right
+from the origin, and for \(1/2 < n < 1\), we have flow around the
+exterior of corners of angles \(\pi/n\). When \(n = 1\), we recover the
+flow of a uniform stream, and when \(n > 1\), we have flow around the
+interior of corners of angles \(\pi/n\).
+\section{Viscous Flow}
+If a flow is dominated by viscous forces, or moves at low velocities,
+we can assume that the Reynolds number is small, \(\mathrm{Re} \ll 1\).
+In this regime, the dimensionless Navier-Stokes equations can be
+simplified to:
+\begin{equation*}
+    \symbf{0} = -\symbf{\nabla} p + \nabla^2 \symbf{q},
+\end{equation*}
+where we scale the pressure by the viscous stress scale,
+\begin{equation*}
+    \mathsf{P} = \frac{\mu \mathsf{Q}}{\mathsf{L}}.
+\end{equation*}
+This equation is known as the \textit{Stokes equation}, and the flow
+described by this equation is known as \textit{Stokes flow} or
+\textit{creeping flow}. This equation is linear and can be solved for
+analytically for simple geometries. Additionally, as the PDE does not
+depend on time, the state of the flow can be determined without
+knowledge of the flow at any other time---this is known as instantaneity.
+An immediate consequence of instantaneity is time-reversibility, which
+means that a flow that is time-reversed is also a solution to the
+Stokes equation. This property means that it is difficult to mix two
+fluids in Stokes flow, as the flow can be reversed to separate the
+fluids.
+\subsection{}
+We can eliminate the pressure term in the Stokes equation by using the
+identity:
+\begin{equation*}
+    \nabla^2 \symbf{q} = \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right) - \symbf{\nabla} \times \left( \symbf{\nabla} \times \symbf{q} \right).
+\end{equation*}
+This allows us to rewrite the Stokes equation as:
+\begin{align*}
+    \symbf{0} & = -\symbf{\nabla} p + \nabla^2 \symbf{q}                                                                                                                                 \\
+    \symbf{0} & = -\symbf{\nabla} p + \left( \symbf{\nabla} \left( \symbf{\nabla} \cdot \symbf{q} \right) - \symbf{\nabla} \times \left( \symbf{\nabla} \times \symbf{q} \right) \right) \\
+    \symbf{0} & = -\symbf{\nabla} p - \symbf{\nabla} \times \left( \symbf{\nabla} \times \symbf{q} \right).
+\end{align*}
+If we then take the curl of this equation, we find:
+\begin{align*}
+    \symbf{\nabla} \times \symbf{0} & = \symbf{\nabla} \times \left( \symbf{\nabla} p \right) + \symbf{\nabla} \times \left( \symbf{\nabla} \times \left( \symbf{\nabla} \times \symbf{q} \right) \right) \\
+    \symbf{0}                       & = \symbf{\nabla} \times \left( \symbf{\nabla} \times \left( \symbf{\nabla} \times \symbf{q} \right) \right).
+\end{align*}
+Therefore, the governing equation for Stokes flow is given by:
+\begin{equation*}
+    \symbf{\nabla} \times \left( \symbf{\nabla} \times \left( \symbf{\nabla} \times \symbf{q} \right) \right) = \symbf{0},
+\end{equation*}
+with the constitutive relationship:
+\begin{equation*}
+    \symbf{\nabla} \cdot \symbf{q} = 0.
+\end{equation*}
+\subsection{Solutions using Stream Functions}
+In 2D, the continuity equation is identically satisfied by the stream
+function defined by the Cauchy-Riemann equations. If we express the
+velocity field in terms of the stream function, we find:
+\begin{align*}
+    \symbf{q} & =
+    \begin{bmatrix}
+        \displaystyle \pdv{\psi}{y}  \\[2ex]
+        \displaystyle -\pdv{\psi}{x} \\[2ex]
+        0
+    \end{bmatrix}
+    \\
+              & =
+    \begin{vmatrix}
+        \symbf{i}              & \symbf{j}              & \symbf{k}              \\
+        \displaystyle \pdif{x} & \displaystyle \pdif{y} & \displaystyle \pdif{z} \\
+        0                      & 0                      & \psi
+    \end{vmatrix}
+    \\
+              & = \symbf{\nabla} \times \left( \psi \symbf{k} \right).
+\end{align*}
+The governing equation then becomes:
+\begingroup
+\allowdisplaybreaks
+\begin{align*}
+    \symbf{0} & = \symbf{\nabla} \times \left( \symbf{\nabla} \times \left( \symbf{\nabla} \times \symbf{q} \right) \right)                                                          \\
+    \symbf{0} & = \symbf{\nabla} \times \left( \symbf{\nabla} \times \left( \symbf{\nabla} \times \left( \symbf{\nabla} \times \left( \psi \symbf{k} \right) \right) \right) \right) \\
+    \symbf{0} & = \symbf{\nabla} \times \left( \symbf{\nabla} \times
+    \begin{vmatrix}
+        \symbf{i}                   & \symbf{j}                    & \symbf{k}              \\
+        \displaystyle \pdif{x}      & \displaystyle \pdif{y}       & \displaystyle \pdif{z} \\
+        \displaystyle \pdv{\psi}{y} & \displaystyle -\pdv{\psi}{x} & 0
+    \end{vmatrix}
+    \right)                                                                                                                                                                          \\
+    \symbf{0} & = \symbf{\nabla} \times \left( \symbf{\nabla} \times
+    \left( \pdv{\psi}{z,x} \symbf{i} + \pdv{\psi}{z,y} \symbf{j} + \left( - \pdv[order=2]{\psi}{x} - \pdv[order=2]{\psi}{y} \right) \symbf{k} \right)
+    \right)                                                                                                                                                                          \\
+    \symbf{0} & = - \symbf{\nabla} \times \left( \symbf{\nabla} \times \left( \nabla^2 \psi \symbf{k} \right) \right)                                                                \\
+    \symbf{0} & = - \symbf{\nabla} \times
+    \begin{vmatrix}
+        \symbf{i}              & \symbf{j}              & \symbf{k}              \\
+        \displaystyle \pdif{x} & \displaystyle \pdif{y} & \displaystyle \pdif{z} \\
+        0                      & 0                      & \nabla^2 \psi
+    \end{vmatrix}
+    \\
+    \symbf{0} & = - \symbf{\nabla} \times
+    \left( \pdv{\nabla^2 \psi}{y} \symbf{i} - \pdv{\nabla^2 \psi}{y} \symbf{j} \right)
+    \\
+    \symbf{0} & = -
+    \begin{vmatrix}
+        \symbf{i}              & \symbf{j}              & \symbf{k}              \\
+        \displaystyle \pdif{x} & \displaystyle \pdif{y} & \displaystyle \pdif{z} \\
+        \displaystyle \pdv{\nabla^2 \psi}{y} & \displaystyle -\pdv{\nabla^2 \psi}{x} & 0
+    \end{vmatrix}
+    \\
+    \symbf{0} & = - \left( \pdv{\nabla^2 \psi}{z,x} \symbf{i} + \pdv{\nabla^2 \psi}{z,y} \symbf{j} + \left( - \pdv[order=2]{\nabla^2 \psi}{x} - \pdv[order=2]{\nabla^2 \psi}{y} \right) \symbf{k} \right) \\
+    \symbf{0} & = \left( \pdv[order=2]{\nabla^2 \psi}{x} + \pdv[order=2]{\nabla^2 \psi}{y} \right) \symbf{k} \\
+    \symbf{0} & = \nabla^2 \left( \nabla^2 \psi \right) \symbf{k} \\
+    \symbf{0} & = \nabla^4 \psi \symbf{k}.
+\end{align*}
+\endgroup
+Therefore, in 2D, the governing equation for Stokes flow is a single
+fourth-order PDE,
+\begin{equation*}
+    \nabla^4 \psi = 0.
+\end{equation*}
+This equation is known as the \textit{biharmonic equation}, and can be
+solved using separation of variables, often by solving the second-order
+Laplace's equation twice.
+\subsection{Boundary Conditions}
+As with unidirectional flow, we can enforce the no-slip condition along
+solid boundaries for Stokes flow.
 \end{document}
